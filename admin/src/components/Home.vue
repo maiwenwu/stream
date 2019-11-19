@@ -73,7 +73,6 @@
       height="750"
       v-loading="tableLoading"
       border
-      stripe
       max-height="900"
       @selection-change="selectAll"
     >
