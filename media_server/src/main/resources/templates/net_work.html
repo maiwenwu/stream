@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="css/sb-admin.css" rel="stylesheet">
+<link rel="stylesheet" href="css/load5.css">
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/net_work.js"></script>
+
+<style type="text/css">
+#net_work{
+	background-color: #a8e9ff;
+}
+</style>
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<div class="card mb-3">
+				<div class="card-header">
+					 NMS Settings
+				</div>
+				<div class="card-body" style="width: 60%; margin: 0 0 0 20%;">
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">IP Address</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="nms_ip" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">NetMask</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="nms_netmask" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">Gateway</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="nms_gateway" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">DNS</span></label>
+						<div class="col-md-9">
+							<input class="form-control" id="nms_dns1" >
+						</div>
+					</div>
+					<!-- <div class="form-group row">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							<button class="btn btn-primary m-b-5 m-t-5"
+								style="margin-top: 10px; width: 100%" id="nms_save">Save</button>
+						</div>
+					</div> -->
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="card mb-3">
+				<div class="card-header">
+					 DATA Settings
+				</div>
+				<div class="card-body" style="width: 60%; margin: 0 0 0 20%;">
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">IP Address</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="lan1_ip" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">NetMask</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="lan1_netmask" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">Gateway</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="lan1_gateway" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">DNS</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="lan1_dns1" >
+						</div>
+					</div>
+					<!-- <div class="form-group row">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							<button class="btn btn-primary m-b-5 m-t-5"
+								style="margin-top: 10px; width: 100%" id="lan1_save">Save</button>
+						</div>
+					</div> -->
+				</div>
+			</div>
+		</div>
+		
+		<div class="container-fluid">
+			<div class="card-body" style="width: 60%; margin: 0 0 0 20%;">
+				<div class="form-group row">
+					<label class="col-md-3 col-form-label"></label>
+					<div class="col-md-9">
+						<button class="btn btn-primary m-b-5 m-t-5"
+							style="margin-top: 10px; width: 100%" id="save">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container-fluid">
+			<div class="card mb-3">
+				<div class="card-header">
+					 IPMI Settings
+				</div>
+				<div class="card-body" style="width: 60%; margin: 0 0 0 20%;">
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">IP Address</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="ipmi_ip" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">NetMask</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="ipmi_netmask" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">Gateway</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="ipmi_gateway" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							<button class="btn btn-primary m-b-5 m-t-5"
+								style="margin-top: 10px; width: 100%" id="ipmi_save">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+	</div>
+
+	<div class="modal" id="modal_net_work" >
+        <div class="modal-dialog">
+        <div class="load-container load5"><div class="loader">Loading...</div></div> 
+        </div>
+    </div>
+
+	<div th:include="common/logout::content"></div>
+</body>
+
+</html>

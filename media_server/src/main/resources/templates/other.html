@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="css/sb-admin.css" rel="stylesheet">
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/other.js"></script>
+
+<style type="text/css">
+#other{
+	background-color: #a8e9ff;
+}
+.form-control {
+	border: none;
+	/* font-weight: bolder; */
+}
+.col-form-label {
+	white-space: nowrap;
+	font-weight: bolder;
+}
+
+</style>
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<!-- <div class="row"> -->
+				<!-- <div class="col-lg-6">
+					<div class="card mb-3">
+						<div class="card-header">
+							 Configuration information
+						</div>
+						<div class="card-body" style="margin: 0 0 0 10%;">
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">NMS IP :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="nms_ip"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">NMS Gateway :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="nms_gateway"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">NMS NetMask :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="nms_netmask"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Data IP :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="data_ip"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Data Gateway :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="data_gateway"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Data NetMask :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="data_netmask"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">IPMI IP :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="ipmi_ip"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">IPMI Gateway :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="ipmi_gateway"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">IPMI NetMask :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="ipmi_ip"></span>
+								</div>
+							</div>
+							<div class="form-group row" style="visibility: hidden;">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">a</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="ipmi_gateway"></span>
+								</div>
+							</div>
+							<div class="form-group row" style="visibility: hidden;">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">a</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="ipmi_netmask"></span>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer small text-muted" id="net_info"></div>
+					</div>
+				</div> -->
+				<!-- <div class="col-lg-6"> -->
+					<div class="card mb-3">
+						<div class="card-header">
+							 System information
+						</div>
+						<div class="card-body" style="margin: 0 0 0 20%;">
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Up Time :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="uptime"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Temp :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="temp"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">System Name :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="system_name"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">System Version :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="system_version"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">CPU Num :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="cpu_num"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">CPU Type :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="cpu_type"></span>
+								</div>
+							</div>
+							<!-- <div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">UUID :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="uuid"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Software Version :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="soft_version"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Hardware Version :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="hard_version"></span>
+								</div>
+							</div> -->
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Control Version :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="control_version"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Server Version :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="server_version"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">CmdLine Version :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="cmdline_version"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Frontend Version :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="frontend_version"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-3 col-lg-3 col-sm-3 col-form-label">Hls Version :</div>
+								<div class="col-md-9 col-lg-9 col-sm-9">
+									<span class="form-control" id="hls_version"></span>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer small text-muted" id="system_info"></div>
+					</div>
+				</div>
+			</div>
+		<!-- </div> -->
+	<!-- </div> -->
+
+	<div th:include="common/logout::content"></div>
+</body>
+
+</html>

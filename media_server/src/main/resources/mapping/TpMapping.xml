@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.tech.mediaserver.dao.TpDao">
+	<resultMap type="com.tech.mediaserver.entity.Transponder"
+		id="tp_allField">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="sat_id" property="satId" jdbcType="INTEGER" />
+		<result column="freq" property="freq" jdbcType="INTEGER" />
+		<result column="symbol_rate" property="symbolRate" jdbcType="INTEGER" />
+		<result column="polarization" property="polarization" jdbcType="INTEGER" />
+		<result column="fec" property="fec" jdbcType="INTEGER"/>
+		<result column="ts_id" property="tsId" jdbcType="INTEGER"/>
+		<result column="on_id" property="onId" jdbcType="INTEGER"/>
+		<result column="eit_id" property="eitId" jdbcType="INTEGER"/>
+		<result column="emm_pids" property="emmPids" jdbcType="VARCHAR"/>
+		<result column="ca_system_ids" property="caSystemIds" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<select id="getAllTp" resultMap="tp_allField">
+		select * from transponder_table 
+	</select>
+
+ 	<select id="getTpBySatId" parameterType="int" resultMap="tp_allField">
+		select * from transponder_table where sat_id=#{sat_id} and id > #{max_tp_id} order by freq
+	</select>
+	
+	<select id="getTpByTpId" parameterType="int" resultMap="tp_allField">
+		select * from transponder_table where id=#{id} order by freq
+	</select>
+	
+	<select id="getMaxTpId" parameterType="int" resultType="int">
+		select max(id) from transponder_table where sat_id=#{satId}
+	</select>
+	
+	<select id="getTpListWithPro" parameterType="int" resultMap="tp_allField">
+		select distinct transponder_table.* from transponder_table join programs_table on transponder_table.id=programs_table.tp_id where transponder_table.sat_id=#{sat_id} and programs_table.board_id = #{board_id} order by freq                                                 
+	</select>
+	
+	<select id="selectAllTp" parameterType="Object" resultMap="tp_allField">
+		select * from transponder_table 
+		<where>
+			<if test=" sat_id != null ">
+				sat_id = #{sat_id} and 
+			</if>
+			CONCAT(freq) like CONCAT('%',#{keyWord},'%') order by freq
+<!-- 			or symbol_rate like CONCAT('%',#{keyWord},'%') 
+			or polarization like CONCAT('%',#{keyWord},'%') 
+			or fec like CONCAT('%',#{keyWord},'%')
+			or ts_id like CONCAT('%',#{keyWord},'%') 
+			or on_id like CONCAT('%',#{keyWord},'%')
+			order by freq -->
+		</where> 
+		                                        
+	</select>
+	
+	<select id="getSatIdByTpList" parameterType="java.util.List" resultType="int">
+		select distinct sat_id from transponder_table where id in
+		 <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+	</select>
+	
+	<select id="getTpListBySatList" parameterType="java.util.List" resultMap="tp_allField">
+		select * from transponder_table where sat_id in
+		 <foreach collection="list" item="sat_id" open="(" separator="," close=")">
+            #{sat_id}
+        </foreach>
+	</select>
+	
+	<delete id="deleteTpByIdList" parameterType="java.util.List">
+		delete from transponder_table where id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+	</delete>
+	
+	<insert id="addTransponder" parameterType="com.tech.mediaserver.entity.Transponder">
+		INSERT INTO transponder_table 
+		(sat_id,freq,symbol_rate,polarization,fec,ts_id,on_id,eit_id) 
+		VALUES 
+		(#{satId},#{freq},#{symbolRate},#{polarization},#{fec},#{tsId},#{onId},#{eitId})
+	</insert>
+
+	<update id="updateTransponder" parameterType="com.tech.mediaserver.entity.Transponder">
+		UPDATE transponder_table
+		<trim prefix="set" suffixOverrides=",">
+			<if test="satId!=null">sat_id=#{satId},</if>
+			<if test="freq!=null">freq=#{freq},</if>
+			<if test="symbolRate!=null">symbol_rate=#{symbolRate},</if>
+			<if test="polarization!=null">polarization=#{polarization},</if>
+			<if test="fec!=null">fec=#{fec},</if>
+			<if test="tsId!=null">ts_id=#{tsId},</if>
+			<if test="onId!=null">on_id=#{onId},</if>
+			<if test="eitId!=null">eit_id=#{eitId},</if>
+			<if test="emmPids!=null">emm_pids=#{emmPids},</if>
+			<if test="caSystemIds!=null">ca_system_ids=#{caSystemIds},</if>
+		</trim>
+		WHERE
+		id=#{id}
+	</update>
+
+	<select id="getSearchTp" resultMap="tp_allField">
+		select * from search_transponder_table 
+	</select>
+	
+	<delete id="deleteSearchTp" >
+		truncate table search_transponder_table 
+	</delete>
+	
+	<delete id="deleteTp" >
+		truncate table transponder_table 
+	</delete>
+	
+	<insert id="addTp" parameterType="com.tech.mediaserver.entity.Transponder">
+		INSERT INTO transponder_table()
+		VALUES
+		<foreach collection="transponders" item="transponders" separator=",">
+			(#{transponders.id},#{transponders.satId},#{transponders.freq},#{transponders.symbolRate},#{transponders.polarization},
+			#{transponders.fec},#{transponders.tsId},#{transponders.onId},#{transponders.eitId},#{transponders.emmPids},#{transponders.caSystemIds})
+		</foreach>
+    </insert>
+
+	<select id="getTpByTpInfo" resultMap="tp_allField">
+		select * from transponder_table where sat_id = #{sat_id} and freq &gt;= #{freq1} and freq &lt;= #{freq2} and symbol_rate &gt;= #{symbolRate1} and symbol_rate &lt;= #{symbolRate2} and polarization = #{polarization}
+	</select>
+
+</mapper>

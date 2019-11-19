@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+<!-- Bootstrap core CSS-->
+<link href="/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link href="/vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin.css" rel="stylesheet">
+<link href="/css/easyui.css" rel="stylesheet">
+<!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin.min.js"></script>
+<script src="/js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script src="/js/new_search.js"></script>
+
+<style type="text/css">
+.windows {
+	float: left;
+	width: 50%;
+	height: 100%;
+	border: 1px solid black;
+	overflow: auto;
+}
+
+.col-form-label {
+	white-space: nowrap;
+}
+
+.span {
+	font-weight: bolder;
+}
+
+#search {
+	background-color: #a8e9ff;
+}
+
+.pro {
+	margin: 0 0 0 10%;
+	height: 50px;
+}
+</style>
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<!-- Breadcrumbs-->
+			<!-- <ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="home">Home</a></li>
+				<li class="breadcrumb-item active">Search Page</li>
+			</ol> -->
+			<div class="card mb-3">
+				<div class="card-header">Search</div>
+
+				<div class="card-body" style="width: 50%; margin: 0 0 0 20%;">
+					<!-- <form class="form-horizontal"> -->
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">Board
+								ID</span></label>
+						<div class="col-md-9">
+							<select class="form-control" id="board_id" style="font-weight:bolder;">
+								<option value=""></option>
+								<option value="0">Board-1 </option>
+								<option value="1">Board-2 </option>
+								<option value="2">Board-3 </option>
+								<option value="3">Board-4 </option>
+								<option value="4">Board-5 </option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group row sideUp" style="display: none">
+						<label class="col-md-3 col-form-label"><span class="span">22KHz</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="tone"
+								readonly="readonly">
+						</div>
+					</div>
+
+					<div class="form-group row sideUp" style="display: none">
+						<label class="col-md-3 col-form-label"><span class="span">LNB
+								Power</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="lnb_power"
+								readonly="readonly">
+						</div>
+					</div>
+
+					<div class="form-group row sideUp" style="display: none">
+						<label class="col-md-3 col-form-label"><span class="span">DiSEqC1.0</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="diseqc1_0"
+								readonly="readonly">
+						</div>
+					</div>
+
+					<div class="form-group row sideUp" style="display: none">
+						<label class="col-md-3 col-form-label"><span class="span">DiSEqC1.1</span></label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="diseqc1_1"
+								readonly="readonly">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">Satellite</span></label>
+						<div class="col-md-9">
+							<select class="form-control" id="satllite">
+								<!-- <option>C_Koreasat 5 (113.0E)</option>
+								<option>Koreasat 5 (113.0E)</option>
+								<option>C_AsiaSat 7 (105.5E)</option> -->
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">Transponder</span></label>
+						<div class="col-md-9">
+							<select class="form-control" id="tp">
+
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">LNB
+								Type</span></label>
+						<div class="col-md-9">
+							<select class="form-control" id="lnb_type">
+
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">Strength</span></label>
+						<div class="col-md-9">
+							<div id="strength" class="easyui-progressbar form-control"
+								style="height: 38px; padding: 0"></div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"><span class="span">Quality</span></label>
+						<div class="col-md-9">
+							<div id="quality" class="easyui-progressbar form-control"
+								style="height: 38px; padding: 0"></div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							<button class="btn btn-primary m-b-5 m-t-5"
+								style="margin-top: 10px; width: 100%" id="tp_search">TP
+								Search</button>
+							<!-- data-toggle="modal"
+								data-target="#myModal" -->
+							<button class="btn btn-info m-b-5 m-t-5 "
+								style="margin-top: 10px; width: 100%" id="sat_search">Satellite
+								Search</button>
+							<button class="btn btn-warning m-b-5 m-t-5 "
+								style="margin-top: 10px; width: 100%" id="blind_search">Blind
+								Search</button>
+						</div>
+					</div>
+					<!-- </form> -->
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+			data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-lg" style="height: 40%">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="myModalLabel">TP Search</h5>
+					</div>
+					<div class="modal-body search-modal" style="overflow: auto;">
+
+						<div
+							style="height: 8%; border: 1px solid black; border-bottom: none">
+							<div
+								style="white-space: nowrap; width: 30%; height: 30px; float: left; margin: 8px 0px 0px 30px; text-align: center; line-height: 30px; font-size: 15px; border: 1px solid black; border-radius: 5px;">
+								<label id="title_tv">Total TV:</label> <label id="total_tv">0</label>
+							</div>
+							<div
+								style="white-space: nowrap; width: 30%; height: 30px; float: right; margin: 8px 30px 0px 0px; text-align: center; line-height: 30px; font-size: 15px; border: 1px solid black; border-radius: 5px;">
+								<label id="title_radio">Total Radio:</label><label
+									id="total_radio">0</label>
+							</div>
+						</div>
+
+						<div style="height: 74%; width: 100%">
+							<div class="windows" style="border-right: none" id="tv"></div>
+							<div class="windows" id="radio"></div>
+						</div>
+						<div style="height: 18%; border: 1px solid black; border-top: none; position: relative;">
+							<div style="position: absolute; bottom: 8px; width: 100%;">
+								<div
+									style="width: 30%; height: 30px; float: left; margin: 8px 0px 0px 20px; text-align: center; line-height: 30px; font-size: 15px; border: 1px solid black; border-radius: 5px;">
+									<label class="search_info"></label>
+								</div>
+								<div
+									style="width: 25%; height: 30px; float: left; margin: 8px 20px 0px 8%; text-align: center; line-height: 30px; font-size: 15px; border: 1px solid black; border-radius: 5px;">
+									<label>Search Time:</label><label class="search_time_m">00</label>:<label
+										class="search_time_s">00</label>
+								</div>
+								<div class="exit"
+									style="white-space: nowrap; width: 25%; height: 30px; float: right; margin: 8px 20px 0px 0px; text-align: center; line-height: 30px; font-size: 15px; border: 1px solid black; border-radius: 5px;">
+									<label>Exit</label>
+								</div>
+							</div>
+							<div id="search_process_div" style="position: absolute; bottom: 50px;width: 100%">
+								<div style="padding-top: 20px;width: 95%;margin: auto" >
+									<div id="search_process" class="easyui-progressbar form-control"
+										style="height: 38px; padding: 0"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade bs-example-modal-lg" id="tp_modal"
+			tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+			aria-hidden="true" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="myModalLabel">Search TP</h5>
+					</div>
+					<div class="modal-body search-modal container" style="overflow: auto;"> 
+						
+						<div style="height: 8%; border: 1px solid black;">
+							<div
+								style="white-space: nowrap; width: 30%; height: 30px; float: left; margin: 8px 0px 0px 30px; text-align: center; line-height: 30px; font-size: 15px; border: 1px solid black; border-radius: 5px;">
+								<label id="">Found TP:</label> <label id="new_tp">0</label>
+							</div>
+						</div> 
+
+						<div style="height: 74%; width: 100%">
+							<div class="windows"
+								style="width: 100%; border-bottom: none; border-top: none;"
+								id="search_tp"></div>
+						</div>
+						<div style="height: 18%; border: 1px solid black;position: relative;">
+							<div style="position: absolute; bottom: 8px; width: 100%;">
+								<div
+									style="width: 30%; height: 30px; float: left; margin: 8px 0px 0px 20px; text-align: center; line-height: 30px; font-size: 15px; border: 1px solid black; border-radius: 5px;">
+									<label class="search_info"></label>
+								</div>
+								<div
+									style="width: 25%; height: 30px; float: left; margin: 8px 20px 0px 8%; text-align: center; line-height: 30px; font-size: 15px; border: 1px solid black; border-radius: 5px;">
+									<label>Search Time:</label><label class="search_time_m">00</label>:<label
+										class="search_time_s">00</label>
+								</div>
+								<div class="exit"
+									style="white-space: nowrap; width: 25%; height: 30px; float: right; margin: 8px 20px 0px 0px; text-align: center; line-height: 30px; font-size: 15px; border: 1px solid black; border-radius: 5px;">
+									<label>Exit</label>
+								</div>
+							</div>
+
+							<div id="search_tp_process_div" style="position: absolute; bottom: 50px;width: 100%">
+								<div style="padding-top: 20px;width: 95%;margin: auto" >
+									<div id="search_tp_process" class="easyui-progressbar form-control"
+										style="height: 38px; padding: 0"></div>
+								</div>
+							</div>
+							
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade bs-example-modal-lg" id="process_modal"
+			tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+			aria-hidden="true" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-llg">
+				<div class="modal-content"
+					style="background-color: rgba(255, 255, 255, 0); border: none;">
+
+					<div class="modal-body process-modal"
+						style="margin: 0 auto; width: 150px; overflow: auto; display: table;">
+
+						<div
+							style="margin-left: 20px; display: table-cell; vertical-align: middle;">
+							<i style="color: red" class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+							<span class="sr-only">Loading...</span>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:include="common/logout::content"></div>
+
+	</div>
+</body>
+
+</html>

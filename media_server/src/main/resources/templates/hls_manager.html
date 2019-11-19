@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="css/sb-admin.css" rel="stylesheet">
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/hls_manager.js"></script>
+
+<!-- 
+<script src="vendor/bootstrap/js/bootstrap-table.js"></script>
+<link href="vendor/bootstrap/css/bootstrap-table.css" rel="stylesheet"> -->
+
+
+<style type="text/css">
+#hls_manager {
+	background-color: #a8e9ff;
+}
+
+.tr-link:hover {
+	cursor: pointer;
+	background-color: #007bff;
+}
+
+.tr-in {
+	background-color: #a8e9ff;;
+}
+
+.table-head {
+	padding-right: 16px;
+	color: #000;
+	height: auto;
+	width: 100%
+}
+
+.table-body {
+	width: 100%;
+	height: 600px;
+	overflow-y: scroll;
+} 
+
+td {
+	font-size : 15px;
+}
+.Offline{
+	text-decoration:line-through;
+   	background-color: #dbdee0;
+} 
+
+</style>
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<!-- Breadcrumbs-->
+			<!-- <ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="home">Home</a></li>
+			</ol> -->
+			<div class="card mb-3">
+				<div class="card-header">Streams List</div>
+				<div class="card-body" style="padding: 0;">
+					<div class="">
+						<div class="row" style="margin: 0">
+							<div class="col-md-2 col-sm-3 col-xs-12" style="margin-top:4px;">
+								<button type="button" class="btn btn-primary" id="synchronize" style="width: 100%;">
+									<i class="fa fa-check-circle-o" aria-hidden="true"></i>
+									Sync
+								</button>
+							</div> 
+							<div class="col-md-2 col-sm-3 col-xs-12" style="margin-top:4px">
+								<input class="form-control formcontrol-sm" value="10" id="refresh_time" placeholder="refresh time"
+									style="display: inline-block;"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" 
+									onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"> 
+							</div>
+							<div class="col-md-2 col-sm-3 col-xs-12" style="margin-top:4px;">
+								<input type="search" class="form-control formcontrol-sm" id="key_word" style="display: inline-block" placeholder="search channel id">
+							</div>
+							<div class="col-md-2 col-sm-3 col-xs-12" style="margin-top:4px">
+								<select class="form-control formcontrol-sm" id="board_id">
+									<option value="">All Board</option>
+									<option value="0">Board-1</option>
+									<option value="1">Board-2</option>
+									<option value="2">Board-3</option>
+									<option value="3">Board-4</option>
+									<option value="4">Board-5</option>
+								</select>
+							</div> 
+							<div class="col-md-2 col-sm-3 col-xs-12" style="margin-top:4px">
+								<select class="form-control formcontrol-sm" id="module_id">
+									<option value="">All Module</option>
+									<option value="0">Module-1</option>
+									<option value="1">Module-2</option>
+									<option value="2">Module-3</option>
+									<option value="3">Module-4</option>
+									<option value="4">Module-5</option>
+									<option value="5">Module-6</option>
+								</select>
+							</div> 
+						</div>
+						<div class="table-head">
+							<table class="table table-bordered" id="dataTable" style="margin-top: 4px;margin-bottom: 0px;">
+								<thead>
+									<tr>
+										<!-- <th width="5%"><input type="checkbox" id="check_all" /></th> -->
+										<th width="5%">No.</th>
+										<th width="10%">Channel ID</th>
+										<th width="10%">B / M</th>
+										<th width="25%">Channel Name</th>
+										<th width="30%">Output URL</th>
+										<!-- <th width="">Origin</th> -->
+										<th width="10%">Bitrate</th>
+										<!-- <th width="10%">Speed</th> -->
+										<th width="10%">Status</th>
+										<!-- <th width="10%">Issue State</th>
+										<th width="">On Demand</th>
+										<th width="">Store Time</th>
+										<th width="">Stored Time</th>
+										<th width="">Issue Time</th>
+										<th width="">App ID</th> -->
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="table-body">
+							<table class="table table-bordered" id="dataTable">
+								<tbody id="hls_list">
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" style="float: left;margin: 0;display: flex;">
+				<div style="padding:5px">
+					<span >Showing <span id="first"></span> to <span id="last"></span> of <span id="total"></span>entries</span>
+				</div>
+			</div>
+			<div class="row" style="float: right;margin: 0;display: flex;">
+				<div style="padding:5px">
+					<select class="form-control formcontrol-sm" id="page_size" style="display: inline-block;width: 75px">
+					<option>10</option>
+					<option>15</option>
+					<option>20</option>
+					<option>50</option>
+					<option>100</option>
+				</select>
+				</div>
+				
+				<div class="col-sm-2 col-md-7" style="float:right;padding:5px">
+					<ul class="pagination">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:include="common/logout::content"></div>
+</body>
+
+</html>

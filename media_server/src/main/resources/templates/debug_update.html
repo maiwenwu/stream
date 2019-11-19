@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="css/sb-admin.css" rel="stylesheet">
+<link rel="stylesheet" href="css/load5.css">
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/debug_update.js"></script>
+
+<style type="text/css">
+	.tr-link:hover {
+    	cursor: pointer;
+    	background-color: #007bff;
+	}
+	.tr-in{
+   		background-color: #a8e9ff;;
+	}
+ 	.Offline{
+		text-decoration:line-through;
+    	background-color: #dbdee0;
+	} 
+</style>
+
+</head>
+
+<body class="" id="page-top">
+
+	<div class="">
+		<div class="container-fluid">
+			<!-- Breadcrumbs-->
+			<!-- <ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="home">Home</a></li>
+			</ol> -->
+			<div class="card mb-3">
+				<div class="card-body">
+
+					<div class="input-group">
+						<span class="input-group-btn">
+							<button style="border: 1px solid #ced4da;" type="button"
+								class="btn btn-info" id="upload">
+								<i class="fa fa-folder" aria-hidden="true"></i> Upload
+							</button>
+							<button style="border: 1px solid #ced4da;" type="button"
+								class="btn btn-info" id="update_module">
+								<i class="fa fa-arrow-circle-o-up" aria-hidden="true"></i>
+								Update
+							</button>
+							<!-- <button style="border: 1px solid #ced4da;" type="button"
+								class="btn btn-info" id="update_pc">
+								<i class="fa fa-arrow-circle-o-up" aria-hidden="true"></i>
+								Update PC
+							</button> -->
+						</span> 
+						<input type="text" class="form-control" style="width: 100%" id="fileName" readonly="readonly">
+					</div>
+					<!-- <div id="info" style="text-align: center;color: red;display: none">Don't leave or refresh the page!</div> -->
+					<div class="row" id="table" style="overflow-y: auto;margin: 0;display: flex;">
+						<table class="table table-bordered" id="dataTable">
+							<thead>
+								<tr>
+									<th width="10%"><input type="checkbox" id="check_all"/></th>
+									<th width="10%">Board ID</th>
+									<th width="10%">Module ID</th>
+									<th width="20%">Version</th>
+									<th width="20%">Run Time</th>
+									<th width="30%">Status</th>
+								</tr>
+							</thead>
+							<tbody id="module_list">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+  			
+  			<form id="files" style="display: none">
+  					<input type="file" id="uploadFile" name="file" class="input-file" enctype="multipart/form-data"/>
+  			</form>
+		</div>
+
+	</div>
+	<div class="modal" id="modal_update" >
+        <div class="modal-dialog">
+        <div class="load-container load5"><div class="loader">Loading...</div></div> 
+        </div>
+    </div>
+	<div th:include="common/logout::content"></div>
+</body>
+
+</html>

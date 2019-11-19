@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.tech.mediaserver.dao.SatlliteDao">
+	<resultMap type="com.tech.mediaserver.entity.Satllite"
+		id="sattlite_allField">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="dir" property="dir" jdbcType="INTEGER" />
+		<result column="angle" property="angle" jdbcType="INTEGER" />
+		<result column="lnb_type" property="lnbType" jdbcType="VARCHAR" />
+	</resultMap>
+
+ 	<select id="getAllSatllite" resultMap="sattlite_allField">
+		select * from satellite_table
+	</select>
+	
+	 <select id="selectAllSatllite" parameterType="String" resultMap="sattlite_allField">
+		<!-- select * from satellite_table where name like CONCAT('%',#{keyWord},'%') or dir like CONCAT('%',#{keyWord},'%') 
+		or angle like CONCAT('%',#{keyWord},'%') or lnb_type like CONCAT('%',#{keyWord},'%') -->
+		select * from satellite_table 
+		<where>
+			<if test=" keyWord != 0 ">
+				CONCAT(angle) like CONCAT('%',#{keyWord},'%')
+			</if>
+		</where>
+	</select>
+	
+	<select id="getSatlliteBySatId" parameterType="int" resultMap="sattlite_allField">
+		select * from satellite_table where id = #{id}
+	</select>
+	
+	<select id="getSatBySatList"  resultMap="sattlite_allField">
+		select * from satellite_table where id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+	</select>
+
+	<insert id="addSatllite" parameterType="com.tech.mediaserver.entity.Satllite">
+		INSERT INTO satellite_table (
+		name,
+		dir,
+		angle,
+		lnb_type
+		) VALUES (
+		#{name},
+		#{dir},
+		#{angle},
+		#{lnbType}
+		)
+	</insert>
+	
+	<insert id="insertSatlliteList" parameterType="com.tech.mediaserver.entity.Satllite">
+		INSERT INTO satellite_table (name,dir,angle,lnb_type) 
+		VALUES 
+		<foreach collection="satllite_list" item="item" separator=",">
+			(#{item.name}, #{item.dir}, #{item.angle}, #{item.lnbType})
+		</foreach>
+	</insert>
+	
+	<update id="updateSatllite" parameterType="com.tech.mediaserver.entity.Satllite">
+		UPDATE satellite_table
+		<trim prefix="set" suffixOverrides=",">
+			<if test="name!=null">name=#{name},</if>
+			<if test="dir!=null">dir=#{dir},</if>
+			<if test="angle!=null">angle=#{angle},</if>
+			<if test="lnbType!=null">lnb_type=#{lnbType},</if>
+		</trim>
+		WHERE
+		id=#{id}
+	</update>
+	
+	<delete id="deleteSatlliteByIds" parameterType="int">
+		delete from satellite_table where 
+		<foreach item="ids" collection="array" open="id in ("
+            separator="," close=")">
+            #{ids}
+        </foreach>
+	</delete>
+	
+	<delete id="deleteSatellite">
+		truncate table satellite_table
+	</delete>
+	
+	<insert id="addSatelliteList" parameterType="com.tech.mediaserver.entity.Satllite">
+		INSERT INTO satellite_table()
+		VALUES
+		<foreach collection="satllites" item="satllites" separator=",">
+			(#{satllites.id},#{satllites.name},#{satllites.dir},#{satllites.angle},#{satllites.lnbType})
+		</foreach>
+    </insert>
+
+</mapper>

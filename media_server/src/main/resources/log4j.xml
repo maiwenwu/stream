@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN"> 
+    <properties>
+        <property name="LOG_HOME">/opt/stream_web</property>
+        <property name="FILE_NAME">mylog</property>
+        <property name="log.sql.level">info</property>
+         <Property name="PATTERN_FORMAT">%d{yyyy-MM-dd HH:mm:ss} [%-5p] %m%n </Property>
+    </properties>
+ 
+    <Appenders>  
+        <Console name="Console" target="SYSTEM_OUT">  
+            <PatternLayout pattern="${PATTERN_FORMAT}"/>  
+        </Console>
+ 
+<!--         <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${LOG_HOME}/${FILE_NAME}.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd HH-mm}-%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile> -->
+        
+        <RollingFile name="RollingInfoFile" fileName="${LOG_HOME}/info.log"
+                     filePattern="${LOG_HOME}/$${date:yyyyMM}/info-%d{yyyyMMdd}-%i.log.gz">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <Filters>
+               <!--  <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/> -->
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+
+            <PatternLayout>
+                <pattern>${PATTERN_FORMAT}</pattern>
+            </PatternLayout>
+
+            <Policies>
+                <!-- rollover on startup, daily and when the file reaches 10 MegaBytes -->
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+        
+         <!--输出警告日志到文件-->
+        <RollingFile name="RollingDebugFile" fileName="${LOG_HOME}/debug.log"
+                     filePattern="${LOG_HOME}/$${date:yyyyMM}/warn-%d{yyyyMMdd}-%i.log.gz">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <Filters>
+               <!--  <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/> -->
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+
+            <PatternLayout>
+                <pattern>${PATTERN_FORMAT}</pattern>
+            </PatternLayout>
+
+            <Policies>
+                <!-- rollover on startup, daily and when the file reaches 10 MegaBytes -->
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+        
+         <!--输出警告日志到文件-->
+        <RollingFile name="RollingWarnFile" fileName="${LOG_HOME}/warn.log"
+                     filePattern="${LOG_HOME}/$${date:yyyyMM}/warn-%d{yyyyMMdd}-%i.log.gz">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <Filters>
+                <!-- <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/> -->
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+
+            <PatternLayout>
+                <pattern>${PATTERN_FORMAT}</pattern>
+            </PatternLayout>
+
+            <Policies>
+                <!-- rollover on startup, daily and when the file reaches 10 MegaBytes -->
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+        
+        <!--输出错误日志到文件-->
+        <RollingFile name="RollingErrorFile" fileName="${LOG_HOME}/error.log"
+                     filePattern="${LOG_HOME}/$${date:yyyyMM}/error-%d{yyyyMMdd}-%i.log.gz">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+
+            <PatternLayout>
+                <pattern>${PATTERN_FORMAT}</pattern>
+            </PatternLayout>
+
+            <Policies>
+                <!-- rollover on startup, daily and when the file reaches 10 MegaBytes -->
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+           
+    </Appenders>  
+ 
+ 	 <Loggers>
+
+        <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+        <Logger name="org.springframework" level="INFO"/>
+        <Logger name="org.mybatis" level="INFO"/>
+
+        <!-- LOG "com.luis*" at TRACE level -->
+        <Logger name="com.luis" level="INFO"/>
+
+        <!-- LOG everything at INFO level -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingInfoFile"/>
+            <AppenderRef ref="RollingDebugFile"/>
+            <AppenderRef ref="RollingWarnFile"/>
+            <AppenderRef ref="RollingErrorFile"/>
+        </Root>
+    </Loggers>
+ 
+<!--     <Loggers>  
+        <Root level="info">  
+            <AppenderRef ref="Console" />  
+            <AppenderRef ref="RollingRandomAccessFile" />  
+        </Root>
+ 
+        <Logger name="com.mengdee.dao" level="${log.sql.level}" additivity="false">
+             <AppenderRef ref="Console" />
+        </Logger>
+    </Loggers>  --> 
+</Configuration>

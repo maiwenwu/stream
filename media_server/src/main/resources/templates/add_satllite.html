@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+<!-- Bootstrap core CSS-->
+<link href="/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link href="/vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin.css" rel="stylesheet">
+<!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+
+<style type="text/css">
+#add_satllite{
+	background-color: #a8e9ff;
+}
+</style>
+
+<script type="text/javascript">
+	
+	$(function(){
+		
+		$('.btn-primary').click(function(){
+			var sat_name = $('#sat_name').val();
+			var sat_dir = $('#sat_dir').val();
+			var sat_angle = $('#sat_angle').val();
+			var sat_lnb_type = $('#sat_lnb_type').val();
+			
+			var data = {
+				"name" : sat_name,
+				"dir" : sat_dir,
+				"angle" : sat_angle,
+				"lnbType" : sat_lnb_type
+			}
+			
+			var satllite = JSON.stringify(data);
+			
+			$.ajax({
+				url : "/search/addSatllite",
+				type : "post",
+				dataType : "json",
+				contentType : "application/json",
+				data : satllite,
+				success : function(data) {
+					console.log("getRfByBoardId:",data);
+					modalShow("","Info","Successful！",true,false);
+				}
+			})
+			
+		})
+		
+	})
+	
+</script>
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<!-- Breadcrumbs-->
+			<!-- <ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="home">Home</a></li>
+				<li class="breadcrumb-item active">Add Satllite Page</li>
+			</ol> -->
+			<div class="card mb-3">
+				<div class="card-header"> Add Satllite
+				</div>
+
+				<div class="card-body" style="width: 50%; margin: 0 0 0 20%;">
+					<!-- <form class="form-horizontal"> -->
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label">Name</label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="sat_name" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label">Dir</label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="sat_dir" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label">Angle</label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="sat_angle" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label">Lnb_type</label>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="sat_lnb_type" >
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							<button class="btn btn-primary m-b-5 m-t-5 " style="width: 100%">Save</button>
+						</div>
+					</div>
+
+					<!-- </form> -->
+				</div>
+
+			</div>
+		</div>
+
+		<div th:include="common/logout::content"></div>
+
+	</div>
+</body>
+
+</html>

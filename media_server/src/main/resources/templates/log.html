@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="css/sb-admin.css" rel="stylesheet">
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/log.js"></script>
+
+<style type="text/css">
+	#log {
+		background-color: #a8e9ff;
+	}
+	
+	.loading-warp {
+		display: none;
+		width: 100%;
+	}
+	
+	.loading-warp .text {
+		display: block;
+		text-align: center;
+		font-size: 12px;
+		line-height: 20px;
+	}
+	
+	.loading-warp img {
+		display: block;
+		width: 20px;
+		height: 20px;
+		margin: 0 auto;
+}
+</style>
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+
+			<div class="card mb-3">
+				<div class="card-header">
+					 <div style="float: left;margin-top: 8px;">
+						Log
+					</div>
+					<div style="float: right;">
+						<select class="form-control formcontrol-sm" id="log_level">
+							<option value="0">Debug</option>
+							<option value="1">Warn</option>
+							<option value="2">Error</option>
+						</select>
+					</div>
+				</div>
+				<div class="card-body" style="overflow-y: auto;">
+					<div class="loading-warp">
+			            <img id="load_gif" src="images/load.gif" />
+			            <span class="text">Loading...</span>
+			        </div>
+					<div style="width: 100%;font-size: 15px;" id="core_log">
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div th:include="common/logout::content"></div>
+</body>
+
+</html>

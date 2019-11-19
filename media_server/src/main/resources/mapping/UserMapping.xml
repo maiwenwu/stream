@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.tech.mediaserver.dao.UserDao">
+	<resultMap type="com.tech.mediaserver.entity.User"
+		id="user_allField">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="role" property="role" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<!-- <result column="password" property="password" jdbcType="VARCHAR"/> -->
+	</resultMap>
+
+	<select id="loginUser" resultMap="user_allField">
+		select * from user_table where binary user_name = #{userName} and binary password = #{password}
+	</select>
+	
+	<select id="getUserInfo" resultMap="user_allField">
+		select * from user_table;
+	</select>
+
+	<update id="updateUser" parameterType="com.tech.mediaserver.entity.User">
+		UPDATE user_table
+		<trim prefix="set" suffixOverrides=",">
+			<if test="password!=null">password=#{password},</if>
+		</trim>
+		WHERE
+		user_name=#{userName}
+	</update>
+
+</mapper>

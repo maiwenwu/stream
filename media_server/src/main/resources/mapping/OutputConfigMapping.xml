@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.tech.mediaserver.dao.OutputConfigDao">
+	<resultMap type="com.tech.mediaserver.entity.OutputConfig"
+		id="output_allField">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="board_id" property="boardId" jdbcType="INTEGER" />
+		<result column="module_id" property="moduleId"
+			jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<!-- <result column="sat_id" property="satId" jdbcType="INTEGER" />
+		<result column="tp_id" property="tpId" jdbcType="INTEGER" /> -->
+		<result column="set_pids" property="setPids" jdbcType="VARCHAR" />
+		<result column="program_id" property="programId" jdbcType="VARCHAR" />
+		<result column="audio_pids" property="audioPids" jdbcType="VARCHAR" />
+		<result column="subtitle_pids" property="subtitlePids" jdbcType="VARCHAR" />
+		<result column="out_mode" property="outMode" jdbcType="INTEGER" />
+		<result column="out_ip" property="outIp" jdbcType="VARCHAR" />
+		<result column="out_port" property="outPort" jdbcType="INTEGER" />
+		<result column="out_state" property="outState" jdbcType="INTEGER" />
+		<result column="lable_id" property="lableId" jdbcType="VARCHAR" />
+		<result column="hls_out_mode" property="hlsOutMode" jdbcType="INTEGER" />
+		<result column="hls_out_ip" property="hlsOutIp" jdbcType="VARCHAR" />
+		<result column="hls_out_port" property="hlsOutPort" jdbcType="VARCHAR" />
+			
+		<association property="program" javaType="com.tech.mediaserver.entity.Programs">
+			<!-- <id column="id" property="id" jdbcType="INTEGER" /> -->
+			<result column="board_id" property="boardId" jdbcType="INTEGER" />
+			<result column="module_id" property="moduleId" jdbcType="INTEGER" />
+			<result column="tp_id" property="tpId" jdbcType="INTEGER" />
+			<result column="service_name" property="serviceName" jdbcType="VARCHAR" />
+			<result column="pmt_pid" property="pmtPid" jdbcType="INTEGER" />
+			<result column="service_id" property="serviceId" jdbcType="INTEGER" />
+			<result column="pcr_pid" property="pcrPid" jdbcType="INTEGER" />
+			<result column="vid_pid" property="vidPid" jdbcType="INTEGER" />
+			<result column="tv_type" property="tvType" jdbcType="INTEGER" />
+			<result column="video_modify_pid" property="videoModifyPid" jdbcType="INTEGER" />
+		</association>
+		
+		<association property="lockSignal" javaType="com.tech.mediaserver.entity.LockSignal">
+			<result column="board_id" property="boardId" jdbcType="INTEGER" />
+			<result column="module_id" property="moduleId" jdbcType="INTEGER" />
+			<result column="sat_id" property="satId" jdbcType="INTEGER" />
+			<result column="tp_id" property="tpId" jdbcType="VARCHAR" />
+			<result column="status" property="status" jdbcType="INTEGER" />
+		</association>
+		
+	</resultMap>
+
+	<select id="getOutputById" resultMap="output_allField">
+		select output_config_table.*,programs_table.* from output_config_table left join programs_table  on programs_table.id = output_config_table.program_id 
+		<where>
+			<if test=" board_id != null ">
+				output_config_table.board_id = #{board_id}
+			</if>
+			<if test=" module_id != null ">
+				and output_config_table.module_id = #{module_id}
+			</if>
+		</where>
+		order by output_config_table.board_id ASC , output_config_table.module_id ASC
+		<!-- where output_config_table.board_id = #{board_id} and output_config_table.module_id = #{module_id} -->
+	</select>
+
+	<insert id="addOutputConfig" parameterType="com.tech.mediaserver.entity.OutputConfig">
+		INSERT INTO output_config_table
+		(board_id,module_id,type,set_pids,program_id,audio_pids,subtitle_pids,out_mode,out_ip,out_port,out_state,lable_id,hls_out_mode,hls_out_ip,hls_out_port)
+		VALUES
+		(#{boardId},#{moduleId},#{type},#{setPids},#{programId},#{audioPids},#{subtitlePids},#{outMode},#{outIp},#{outPort},#{outState},#{lableId},#{hlsOutMode},#{hlsOutIp},#{hlsOutPort}
+		)
+	</insert>
+	
+	<select id="getAllOutPut" resultMap="output_allField">
+		select * from output_config_table
+	</select>
+	
+	<select id="getOutput" resultMap="output_allField">
+		select * from output_config_table where id = #{id}
+	</select>
+	
+	<select id="getOutputBySatId" resultMap="output_allField">
+		select * from output_config_table where board_id = #{board_id}
+	</select>
+	
+	<update id="updateOutput" parameterType="com.tech.mediaserver.entity.OutputConfig">
+		UPDATE output_config_table
+		<trim prefix="set" suffixOverrides=",">
+			<if test="boardId!=null">board_id=#{boardId},</if>
+			<if test="moduleId!=null">module_id=#{moduleId},</if>
+			<if test="type!=null">type=#{type},</if>
+			<!-- <if test="satId!=null">sat_id=#{satId},</if>
+			<if test="tpId!=null">tp_id=#{tpId},</if> -->
+			<if test="setPids!=null">set_pids=#{setPids},</if>
+			<if test="programId!=null">program_id=#{programId},</if>
+			<if test="audioPids!=null">audio_pids=#{audioPids},</if>
+			<if test="subtitlePids!=null">subtitle_pids=#{subtitlePids},</if>
+			<if test="outMode!=null">out_mode=#{outMode},</if>
+			<if test="outIp!=null">out_ip=#{outIp},</if>
+			<!-- <if test="outPort!=0">out_port=#{outPort},</if> -->
+			<if test="outState!=null">out_state=#{outState},</if>
+		</trim>
+		WHERE id=#{id}
+
+	</update>
+	
+	<delete id="deleteOutput" parameterType="int">
+		delete from output_config_table where id = #{id}
+	</delete>
+	
+	<delete id="deleteAllStreamingByBoardId" parameterType="int">
+		delete from output_config_table where board_id = #{board_id}
+	</delete>
+	
+	<select id="getOutputBySatIdList" resultMap="output_allField">
+		select output_config_table.*,lock_signal_table.* from output_config_table left join lock_signal_table on 
+		lock_signal_table.board_id = output_config_table.board_id and lock_signal_table.module_id = output_config_table.module_id 
+		where sat_id in
+		<foreach collection="list" item="sat_id" open="(" separator="," close=")">
+            #{sat_id}
+        </foreach>
+	</select>
+	
+	<select id="getOutputByTpIdList" resultMap="output_allField">
+		select output_config_table.*,lock_signal_table.* from output_config_table left join lock_signal_table on 
+		lock_signal_table.board_id = output_config_table.board_id and lock_signal_table.module_id = output_config_table.module_id 
+		where tp_id in
+		<foreach collection="list" item="tp_id" open="(" separator="," close=")">
+            #{tp_id}
+        </foreach>
+	</select>
+	
+	<select id="getOutputByProIdList" resultMap="output_allField">
+		select output_config_table.*,lock_signal_table.* from output_config_table left join lock_signal_table on 
+		lock_signal_table.board_id = output_config_table.board_id and lock_signal_table.module_id = output_config_table.module_id 
+		where program_id in
+		<foreach collection="list" item="program_id" open="(" separator="," close=")">
+            #{program_id}
+        </foreach>
+	</select>
+	
+	<select id="getOutputByBoardIdAndSatIdAndTpId" resultMap="output_allField">
+		select output_config_table.*,lock_signal_table.* from output_config_table left join lock_signal_table on 
+		lock_signal_table.board_id = output_config_table.board_id and lock_signal_table.module_id = output_config_table.module_id 
+		<where>
+			<if test=" board_id != null ">
+				lock_signal_table.board_id = #{board_id}
+			</if>
+			<if test=" sat_id != 0 ">
+				and lock_signal_table.sat_id = #{sat_id}
+			</if>
+			<if test=" tp_id != 0 ">
+				and lock_signal_table.tp_id = #{tp_id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getOutputByIdList" resultMap="output_allField">
+		select output_config_table.*,lock_signal_table.* from output_config_table left join lock_signal_table on 
+		lock_signal_table.board_id = output_config_table.board_id and lock_signal_table.module_id = output_config_table.module_id 
+		where output_config_table.id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+	</select>
+	
+	<delete id="deleteOutputByIdList" parameterType="int">
+		delete from output_config_table where id in
+		<foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+	</delete>
+	
+	<delete id="deleteAllOutPut" >
+		truncate table output_config_table 
+	</delete>
+	
+	<insert id="addOutput" parameterType="com.tech.mediaserver.entity.OutputConfig">
+		INSERT INTO output_config_table(id,board_id,module_id,type,set_pids,program_id,audio_pids,subtitle_pids,out_mode,out_ip,out_port,out_state,lable_id,hls_out_mode,hls_out_ip,hls_out_port)
+		VALUES
+		<foreach collection="outputConfigs" item="outputConfigs" separator=",">
+			(#{outputConfigs.id},#{outputConfigs.boardId},#{outputConfigs.moduleId},#{outputConfigs.type},#{outputConfigs.setPids},#{outputConfigs.programId},
+			#{outputConfigs.audioPids},#{outputConfigs.subtitlePids},#{outputConfigs.outMode},#{outputConfigs.outIp},#{outputConfigs.outPort},#{outputConfigs.outState},
+			#{outputConfigs.lableId},#{outputConfigs.hlsOutMode},#{outputConfigs.hlsOutIp},#{outputConfigs.hlsOutPort})
+		</foreach>
+    </insert>
+
+</mapper>

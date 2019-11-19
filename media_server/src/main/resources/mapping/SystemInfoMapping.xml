@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.tech.mediaserver.dao.SystemInfoDao">
+	<resultMap type="com.tech.mediaserver.entity.SystemInfo"
+		id="system_info_allField">
+		<id column="log_level" property="logLevel" jdbcType="INTEGER" />
+		<!-- <result column="role" property="role" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" /> 
+		<result column="password" property="password" jdbcType="VARCHAR"/> -->
+	</resultMap>
+
+	<select id="getLogLevel" resultMap="system_info_allField">
+		select * from system_info_table
+	</select>
+
+	<update id="setLogLevel" parameterType="int">
+		update system_info_table set log_level = #{log_level}
+	</update>
+
+
+</mapper>

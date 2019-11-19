@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+<!-- Bootstrap core CSS-->
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link href="vendor/font-awesome/css/font-awesome.min.css"rel="stylesheet" type="text/css">
+<!-- Custom styles for this template-->
+<link href="css/sb-admin.css" rel="stylesheet">
+<link href="/css/easyui.css" rel="stylesheet">
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin.min.js"></script>
+<script src="/js/jquery.easyui.min.js"></script>
+<link href="/vendor/bootstrap/css/select2.min.css" rel="stylesheet">
+<script type="text/javascript" src="/vendor/bootstrap/js/select2.min.js"></script>
+<script type="text/javascript" src="/vendor/bootstrap/js/zh-CN.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script src="js/stream_manager.js"></script>
+<style>
+.div-inline {
+	padding-left: 1%;
+}
+.div-inline table tbody tr {
+	border-top: hidden;
+}
+#table_stream_list {
+    border-collapse: separate; /* collapse */
+}
+.fa-play {
+	color: green;
+}
+
+.fa-stop {
+	color: #c53838;
+}
+
+.fa-plus {
+	color: #007Bff;
+}
+
+.fa-plus:hover {
+	color: #5188c3;
+}
+
+.fa-cog {
+	color: #007Bff;
+}
+
+.show .fa-cog {
+	color:white;
+}
+
+.fa-cog:hover {
+	color: #5188c3;
+}
+
+.fa-check-circle-o {
+	color:#00FF33;
+}
+
+.fa-times-circle-o {
+	color:red;
+}
+
+#stream_list .info td {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.div-inline tr {
+	padding: 10px; 
+	font-size: 80%;
+	white-space: nowrap; 
+}
+
+.table-head th {
+	vertical-align: middle;
+	text-align: center;
+}
+
+#streaming_manager {
+	background-color: #a8e9ff;
+}
+
+button {
+	background: transparent; /*按钮背景透明*/
+	border-width: 0px; /*边框透明*/
+	outline: none; /*点击后没边框*/
+}
+
+.col-form-label {
+	white-space: nowrap;
+	text-align: left;
+	margin: 0 auto;
+	/* background-color: #337AB7; */
+}
+
+.span {
+	font-weight: bolder;
+}
+
+.select2-selection__clear{
+	display:none;
+}
+
+.tr-link:hover {
+   	cursor: pointer;
+   	background-color: #007bff;
+}
+.tr-in{
+  	background-color: #a8e9ff;;
+}
+
+.table-head{padding-right:16px; color:#000;height:auto;width: 100%;margin-top: 4px;}
+.table-body{width:100%;overflow-y:scroll;} 
+
+</style>
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<div class="card mb-3">
+				<div class="card-header">
+					<div style="float: left;">
+						<span>Manage Streams</span> 
+					</div>
+					<div style="float: right;width: 80%;">
+						<div  style="float: right;">
+							<!-- <span style="padding-right: 30px" > 
+								UP:<span>0day,00:00:00</span>
+							</span>	 -->
+							<span style="padding-right: 30px" > 
+								TOTAL:<span id="total">0</span>
+							</span>	
+							<span style="padding-right: 30px" > 
+								RUNNING:<span id="running">0</span>
+							</span>	
+							<span style="padding-right: 30px" > 
+								STOP:<span id="stop">0</span>
+							</span>	
+							<span style="padding-right: 30px" > 
+								ERROR:<span id=error>0</span>
+							</span>	
+						</div>
+					</div>
+				</div>
+				<div class="card-body" style="padding: 0;">
+					<div class="">
+						<div class="row" style="margin: 0;">
+							<div class="col-md-2" style="margin-top:4px">
+								<select class="form-control formcontrol-sm" id="board_id">
+									<option value="">All Board</option>
+									<option value="0">Board-1</option>
+									<option value="1">Board-2</option>
+									<option value="2">Board-3</option>
+									<option value="3">Board-4</option>
+									<option value="4">Board-5</option>
+								</select>
+							</div>
+							<div class="col-md-2" style="margin-top:4px">
+								<select class="form-control formcontrol-sm" id="module_id">
+									<option value="">All Module</option>
+									<option value="0">Module-1</option>
+									<option value="1">Module-2</option>
+									<option value="2">Module-3</option>
+									<option value="3">Module-4</option>
+									<option value="4">Module-5</option>
+									<option value="5">Module-6</option>
+								</select>
+							</div>
+						</div>
+						<div class="table-head" >
+							<table class="table" 
+								style="border: 1px solid rgba(0, 0, 0, .125);margin: 0px;border-bottom: hidden;">
+								<thead>
+									<tr>
+										<!-- <th>Id</th> -->
+										<th width="10%">Board ID</th>
+										<th width="10%">Module ID</th>
+										<th width="10%">Status</th>
+										<th width="10%">Temp</th>
+										<th width="10%">Lock</th>
+										<!-- <th width="10%">Strength</th>
+										<th width="10%">Quality</th> -->
+										<th width="10%">Count</th>
+										<th width="20%">Total Bitrate</th>
+										<th width="20%">Settings</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="table-body">
+							<table class="table" id="table_stream_list" width="100%" cellspacing="0" 
+							style="border: 1px solid rgba(0, 0, 0, .125);">
+								<tbody id="stream_list">
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="lock_signal_modal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+			data-backdrop="static" data-keyboard="false" style="overflow: auto;">
+			<div class="modal-dialog modal-llg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Module Lock</h5>
+						<button class="close" type="button" data-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="text-align: center;">
+						<div class="card-body">
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"><span
+									class="span">Board ID</span></label>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="lock_board_id"
+										th:value="${board_id}" readonly="readonly">
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"><span
+									class="span">Module ID</span></label>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="lock_module_id"
+										th:value="${module_id}" readonly="readonly">
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"><span
+									class="span">Satellite</span></label>
+								<div class="col-md-9">
+									<select class="form-control" id="lock_sat">
+										<!-- <option>C_Koreasat 5 (113.0E)</option>
+									<option>Koreasat 5 (113.0E)</option>
+									<option>C_AsiaSat 7 (105.5E)</option> -->
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"><span
+									class="span">Transponder</span></label>
+								<div class="col-md-9">
+									<select class="form-control" id="lock_tp">
+
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"><span
+									class="span">LNB Type</span></label>
+								<div class="col-md-9">
+									<select class="form-control" id="lock_lnb_freq">
+
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"><span
+									class="span">Strength</span></label>
+								<div class="col-md-9">
+									<div id="strength" class="easyui-progressbar form-control"
+										style="height: 38px; padding: 0"></div>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"><span
+									class="span">Quality</span></label>
+								<div class="col-md-9">
+									<div id="quality" class="easyui-progressbar form-control"
+										style="height: 38px; padding: 0"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button" id="lock_close">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="add_stream_modal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+			data-backdrop="static" data-keyboard="false" style="overflow: auto;">
+			<div class="modal-dialog modal-lllg" role="document">
+				<div class="modal-content add_stream">
+					<div class="modal-header">
+						<h5 class="modal-title" id="add_title">Add Stream</h5>
+					</div>
+					<div class="modal-body" style="text-align: center;">
+						<span id="output_id" style="display: none" ></span>
+						<div class="card-body">
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"><span
+									class="span">Board ID</span></label>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="add_board_id"
+										readonly="readonly">
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"><span
+									class="span">Module ID</span></label>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="add_module_id"
+										readonly="readonly">
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"> <span
+									class="span">Type</span>
+								</label>
+								<div class="col-md-9">
+									<select class="form-control" id="type">
+									</select>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"> <span
+									class="span">Satellite</span>
+								</label>
+								<div class="col-md-9">
+									<select class="form-control" id="add_sat">
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"><span
+									class="span">Transponder</span></label>
+								<div class="col-md-9">
+									<select class="form-control" id="add_tp">
+									</select>
+								</div>
+							</div>
+
+							<div id="set_pids" style="display: none">
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">PID List</span></label>
+									<div class="col-md-9">
+										<div class="input-group">
+										<!-- oninput = "value=value.replace(/[^\d]/g,'')" -->
+											<input class="form-control" id="pids"  />
+											<!-- <button class="btn btn-primary" type="button" id="add_pid">Add
+											</button> -->
+											<button class="btn btn-primary" type="button" id="show_pid">
+												<i class="fa fa-cog"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+								<!-- <div class="pids_list" style="display: none">
+									<div class="form-group row">
+										<label class="col-md-3 col-form-label"><span
+											class="span">PID List</span></label>
+										<div class="col-md-9">
+											<select class="form-control" id="pids_list"
+												multiple="multiple" style="width: 100%">
+											</select>
+										</div>
+									</div>
+								</div> -->
+							</div>
+
+							<div id="programs">
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">Program</span></label>
+									<div class="col-md-9">
+										<div class="input-group">
+											<select id="pro" class=" form-control">
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">Audio PID</span></label>
+									<div class="col-md-9">
+										<select class="form-control" id="audio" multiple="multiple"
+											style="width: 100%">
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">Video PID</span></label>
+									<div class="col-md-9">
+										<input class="form-control" id="vedio" readonly="readonly">
+									</div>
+								</div>
+								<div class="sub" style="display: none">
+									<div class="form-group row">
+										<label class="col-md-3 col-form-label"><span
+											class="span">Subtitle PID</span></label>
+										<div class="col-md-9">
+											<select class="form-control" id="subtitle" multiple="multiple"
+												style="width: 100%">
+											</select>
+										</div>
+									</div>
+								</div>
+								
+								<div class="teletext" style="display: none">
+									<div class="form-group row">
+										<label class="col-md-3 col-form-label"><span
+											class="span">Teletext</span></label>
+										<div class="col-md-9">
+											<select class="form-control" id="teletext" multiple="multiple"
+												style="width: 100%">
+											</select>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							<div class="advanced" style="display: none">
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">PMT Remapping</span></label>
+									<div class="col-md-9">
+										<input class="form-control" value="512">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">Video Remmapping</span></label>
+									<div class="col-md-9">
+										<input class="form-control" value="256">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">Audio Remmapping</span></label>
+									<div class="col-md-9">
+										<input class="form-control" value="112">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">Program Name</span></label>
+									<div class="col-md-9">
+										<input class="form-control" value="Phoenix InfoNews Channel">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">Program Provider</span></label>
+									<div class="col-md-9">
+										<input class="form-control" value="Phoenix">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">Program Title</span></label>
+									<div class="col-md-9">
+										<input class="form-control" value="1Phoenix InfoNews">
+									</div>
+								</div>
+
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"> <span
+									class="span">Channel ID</span></label>
+								<div class="col-md-9">
+									<input class="form-control" id="channel_id" oninput = "value=value.replace('_','')">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"> <span
+									class="span">GX Protocol</span></label>
+								<div class="col-md-9">
+									<select class="form-control" id="protocol">
+									</select>
+								</div>
+							</div>
+							<div id="ip" style="display: none">
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">IP</span></label>
+									<div class="col-md-9">
+										<input class="form-control" type="text" id="out_ip">
+									</div>
+								</div>
+								<!-- <div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">Port</span></label>
+									<div class="col-md-9">
+										<input class="form-control" type="text" id="out_port">
+									</div>
+								</div> -->
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label"> <span
+									class="span">Protocol</span></label>
+								<div class="col-md-9">
+									<select class="form-control" id="hls_protocol">
+										<!-- <option value="0">1-http</option>
+										<option value="1">2-udp</option> -->
+									</select>
+								</div>
+							</div>
+							<div id="hls_ip" style="display: none">
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">IP</span></label>
+									<div class="col-md-9">
+										<input placeholder="For example : ip:port" class="form-control" type="text" id="hls_out_ip">
+									</div>
+								</div>
+								<!-- <div class="form-group row">
+									<label class="col-md-3 col-form-label"><span
+										class="span">HLS Port</span></label>
+									<div class="col-md-9">
+										<input class="form-control" id="hls_out_port" oninput = "value=value.replace(/[^\d]/g,'')" />
+									</div>
+								</div> -->
+							</div>
+							<div class="form-group row" id="output">
+								<label class="col-md-3 col-form-label"><span class="span">Output</span></label>
+								<div class="col-md-9" style="text-align: left;height:80px;overflow-y:auto;" id="out_put_scroll_y">
+									<div class="col-md-6" style="text-align: left;float:left" id="output_list">
+									</div>
+									<div class="col-md-6" style="text-align: left;float:right;" id="output_list_2">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button"
+							data-dismiss="modal">Close</button>
+						<button class="btn btn-primary" id="add_config">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="showPidModal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+			data-backdrop="static" data-keyboard="false" style="overflow: auto;">
+			<div class="modal-dialog modal-lllg" role="document">
+				<div class="modal-content show_pid">
+
+					<div class="modal-header">
+						<div class="card-body " style="padding: 0px 1.25rem;">
+							<table class="table" style="border-top: hidden;margin-bottom: 0" >
+								<tr>
+									<th width="5%"><label class="col-form-label"><span
+										class="span">PID List</span></label></th>
+									<th><input placeholder="please input pid" class="form-control" type="text" id="pid_list"></th>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+					<div class="modal-body" style="overflow: auto; ">
+						<div class="card-body " style="height: 50px;">
+						
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>EMM PID(CAS)</th>
+										<th>PAT PID</th>
+										<th>CAT PID</th>
+										<!-- <th>NIT PID</th> -->
+										<th>SDT PID</th>
+										<th class="eit_pid">EIT PID</th>
+										<!-- <th>TDT PID</th> -->
+									</tr>
+								</thead>
+								<tbody id="common_pid_content">
+								</tbody>
+							</table>
+							<hr>
+							<table class="table table-bordered" style="white-space: nowrap;">
+								<thead>
+									<tr>
+										<th>Program Name</th>
+										<th>Video PID</th>
+										<th>Audio PID</th>
+										<th>Subtitle PID</th>
+										<th>Teletext</th>
+										<th>ECM PID(CAS)</th>
+									</tr>
+								</thead>
+								<tbody id="pid_content">
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button"
+							data-dismiss="modal">Close</button>
+						<button class="btn btn-primary" id="save_pid">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true"
+			data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+					</div>
+
+					<div class="modal-body" style="text-align: center;">
+						Are you sure to delete it ?
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button"
+							data-dismiss="modal">No</button>
+						<button class="btn btn-primary" id="delete">Yes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:include="common/logout::content"></div>
+
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.tech.mediaserver.dao.AudioPidsDao">
+	<resultMap type="com.tech.mediaserver.entity.AudioPids"
+		id="audio_allField">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="board_id" property="boardId" jdbcType="INTEGER" />
+		<result column="module_id" property="moduleId" jdbcType="INTEGER" />
+		<result column="program_id" property="programId" jdbcType="INTEGER" />
+		<result column="audio_pid" property="audioPid" jdbcType="INTEGER" />
+		<result column="language" property="language" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="modify_pid" property="modifyPid" jdbcType="INTEGER" />
+		<!-- <result column="password" property="password" jdbcType="VARCHAR"/> -->
+		
+		<association property="program" javaType="com.tech.mediaserver.entity.Programs">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="board_id" property="boardId" jdbcType="INTEGER" />
+			<result column="module_id" property="moduleId" jdbcType="INTEGER" />
+			<result column="tp_id" property="tpId" jdbcType="INTEGER" />
+			<result column="service_name" property="serviceName" jdbcType="VARCHAR" />
+			<result column="pmt_pid" property="pmtPid" jdbcType="INTEGER" />
+			<result column="service_id" property="serviceId" jdbcType="INTEGER" />
+			<result column="pcr_pid" property="pcrPid" jdbcType="INTEGER" />
+			<result column="vid_pid" property="vidPid" jdbcType="INTEGER" />
+			<result column="tv_type" property="tvType" jdbcType="INTEGER" />
+			<result column="video_modify_pid" property="videoModifyPid" jdbcType="INTEGER" />
+		</association>
+		
+	</resultMap>
+
+	<select id="getAllAudioPids" resultMap="audio_allField">
+		select * from audio_pids_table 
+	</select>
+
+	<select id="getAudioByProId" resultMap="audio_allField">
+		select * from audio_pids_table where program_id = #{program_id} and board_id = #{board_id}
+	</select>
+	
+	<select id="getAudioByProList" resultMap="audio_allField">
+	
+		select * from audio_pids_table where program_id in 
+		<foreach collection="proIdList" item="pro_id" open="(" separator="," close=")">
+            #{pro_id}
+        </foreach>  
+        and audio_pids_table.board_id = #{board_id};
+
+	</select>
+
+	<delete id="deleteAudioByProIdList">
+		delete from audio_pids_table where program_id in 
+		 <foreach collection="pro_list" item="pro_id" open="(" separator="," close=")">
+            #{pro_id}
+        </foreach>
+	</delete>
+	
+	<delete id="deleteAudioPids">
+		truncate table audio_pids_table 
+	</delete>
+	
+	<insert id="addAudioPids" parameterType="com.tech.mediaserver.entity.AudioPids">
+		INSERT INTO audio_pids_table()
+		VALUES
+		<foreach collection="audioPids" item="audioPids" separator=",">
+			(#{audioPids.id},#{audioPids.boardId},#{audioPids.moduleId},#{audioPids.programId},#{audioPids.audioPid},#{audioPids.language},#{audioPids.type},#{audioPids.modifyPid})
+		</foreach>
+    </insert>
+
+</mapper>

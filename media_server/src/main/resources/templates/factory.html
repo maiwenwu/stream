@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="css/sb-admin.css" rel="stylesheet">
+<link rel="stylesheet" href="css/load5.css">
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/factory.js"></script>
+
+<style type="text/css">
+#factory{
+	background-color: #a8e9ff;
+}
+</style>
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<div class="card mb-3">
+				<div class="card-header">
+					Reset All
+				</div>
+				<div class="card-body" style="text-align: center">
+					<label>Click the button 'Reset All' to set all configurations back to default. </label> <br>
+					<label>	It is recommended to backup the current configuration first.</label> <br>
+					<label>	Warning: All you configuration will lose and set to default. Be careful!</label> <br>
+					<button type="button" class="btn btn-primary" id="reset_factory" style="width: 500px"> 
+						Reset All 
+					</button>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container-fluid">
+			<div class="card mb-3">
+				<div class="card-header">
+					Reset Data
+				</div>
+				<div class="card-body" style="text-align: center">
+					<label>	Warning: All you configuration will lose and set to default expect network setting. Be careful!</label> <br>
+					<button type="button" class="btn btn-primary" id="reset_data" style="width: 500px"> 
+						Reset Data 
+					</button>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container-fluid">
+			<div class="card mb-3">
+				<div class="card-header">
+					Reset Streams
+				</div>
+				<div class="card-body" style="text-align: center">
+					<label>	Warning: All you streams will lose. Be careful!</label> <br>
+					<button type="button" class="btn btn-primary" id="reset_streams" style="width: 500px"> 
+						Reset Streams 
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="modal_wait" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+        <div class="load-container load5"><div class="loader">Loading...</div></div> 
+        </div>
+    </div>
+
+	<div th:include="common/logout::content"></div>
+</body>
+
+</html>

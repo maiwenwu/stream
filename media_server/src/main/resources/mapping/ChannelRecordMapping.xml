@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tech.mediaserver.dao.ChannelRecordDao">
+
+    <select id="getList" resultType="com.tech.mediaserver.entity.ChannelRecord" parameterType="com.tech.mediaserver.utils.PageBean">
+        <![CDATA[
+ 			SELECT
+                id AS id,
+                channel_id AS channelId,
+                channel_name AS channelName,
+                source_url AS sourceUrl,
+                on_demand AS onDemand,
+                store_time AS storeTime,
+                state AS state,
+                select_app AS selectApp,
+                create_time AS createTime,
+                update_time AS updateTime,
+                issue_time AS issueTime,
+                issue_state AS issueState,
+                bitrate AS bitrate,
+                speed AS speed,
+                stored_time AS storedTime,
+                origin AS origin,
+                board_id AS boardId,
+                module_id AS moduleId,
+                hls_out_mode AS hlsOutMode,
+                hls_out_ip AS hlsOutIp,
+                hls_out_port AS hlsOutPort
+            FROM
+                channel_record
+            WHERE
+        ]]>
+            <if test="channelName!=null">channel_name LIKE '%${channelName}%' AND </if>
+            <if test="channelId!=null">channel_id LIKE '%${channelId}%' AND </if>
+            <if test="state!=null">state LIKE '%${state}%' AND </if>
+            <if test="issueState!=null">issue_state LIKE '%${issueState}%' AND </if>
+            <if test="appId!=null">select_app LIKE '%${appId}%' AND </if>
+            <if test="onDemand!=null">on_demand LIKE '%${onDemand}%' AND </if>
+            1 = 1 
+            ORDER BY id DESC 
+            LIMIT #{start},#{size}
+    </select>
+
+    <select id="getAll" resultType="com.tech.mediaserver.entity.ChannelRecord" parameterType="com.tech.mediaserver.dto.SearchDto">
+        SELECT
+            id AS id,
+            channel_id AS channelId,
+            channel_name AS channelName,
+            source_url AS sourceUrl,
+            on_demand AS onDemand,
+            store_time AS storeTime,
+            state AS state,
+            select_app AS selectApp,
+            create_time AS createTime,
+            update_time AS updateTime,
+            issue_time AS issueTime,
+            issue_state AS issueState,
+            bitrate AS bitrate,
+            speed AS speed,
+            stored_time AS storedTime,
+            origin AS origin,
+            board_id AS boardId,
+            module_id AS moduleId,
+            hls_out_mode AS hlsOutMode,
+            hls_out_ip AS hlsOutIp,
+            hls_out_port AS hlsOutPort
+        FROM
+            channel_record
+        WHERE
+        <choose>
+        	<when test="ids!=null">
+        		id in 
+        		<foreach collection="ids" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				and 
+        	</when>
+        	<otherwise>
+		        <if test="channelName!=null">channel_name LIKE '%${channelName}%' AND</if>
+		        <if test="channelId!=null">channel_id LIKE '%${channelId}%' AND</if>
+		        <if test="state!=null">state LIKE '%${state}%' AND</if>
+		        <if test="issueState!=null">issue_state LIKE '%${issueState}%' AND</if>
+		        <if test="appId!=null">select_app LIKE '%${appId}%' AND</if>
+		    </otherwise>
+        </choose>
+        1 = 1
+    </select>
+	
+	<select id="getAllChannelRecord" resultType="com.tech.mediaserver.entity.ChannelRecord">
+        SELECT
+            id AS id,
+            channel_id AS channelId,
+            channel_name AS channelName,
+            source_url AS sourceUrl,
+            on_demand AS onDemand,
+            store_time AS storeTime,
+            state AS state,
+            select_app AS selectApp,
+            create_time AS createTime,
+            update_time AS updateTime,
+            issue_time AS issueTime,
+            issue_state AS issueState,
+            bitrate AS bitrate,
+            speed AS speed,
+            stored_time AS storedTime,
+            origin AS origin,
+            board_id AS boardId,
+            module_id AS moduleId,
+            hls_out_mode AS hlsOutMode,
+            hls_out_ip AS hlsOutIp,
+            hls_out_port AS hlsOutPort
+        FROM
+            channel_record
+    </select>
+	
+	<select id="getByChannelIdList" resultType="com.tech.mediaserver.entity.ChannelRecord">
+		<![CDATA[
+ 			SELECT
+                id AS id,
+                channel_id AS channelId,
+                channel_name AS channelName,
+                source_url AS sourceUrl,
+                on_demand AS onDemand,
+                store_time AS storeTime,
+                state AS state,
+                select_app AS selectApp,
+                create_time AS createTime,
+                update_time AS updateTime,
+                issue_time AS issueTime,
+                issue_state AS issueState,
+                bitrate AS bitrate,
+                speed AS speed,
+                stored_time AS storedTime,
+                origin AS origin,
+                board_id AS boardId,
+                module_id AS moduleId,
+                hls_out_mode AS hlsOutMode,
+                hls_out_ip AS hlsOutIp,
+                hls_out_port AS hlsOutPort
+            FROM
+                channel_record 
+                where channel_id in
+         ]]>
+		<foreach collection="list" item="channel_id" open="(" separator="," close=")">
+			#{channel_id}
+        </foreach> 
+         
+        <foreach collection="list" item="channel_id">
+			or channel_id like CONCAT('%',CONCAT(#{channel_id},'_'),'%')
+        </foreach> 
+	</select>
+
+    <select id="getByChannelId" resultType="com.tech.mediaserver.entity.ChannelRecord" parameterType="String">
+        <![CDATA[
+ 			SELECT
+                id AS id,
+                channel_id AS channelId,
+                channel_name AS channelName,
+                source_url AS sourceUrl,
+                on_demand AS onDemand,
+                store_time AS storeTime,
+                state AS state,
+                select_app AS selectApp,
+                create_time AS createTime,
+                update_time AS updateTime,
+                issue_time AS issueTime,
+                issue_state AS issueState,
+                bitrate AS bitrate,
+                speed AS speed,
+                stored_time AS storedTime,
+                origin AS origin,
+                board_id AS boardId,
+                module_id AS moduleId,
+                hls_out_mode AS hlsOutMode,
+                hls_out_ip AS hlsOutIp,
+                hls_out_port AS hlsOutPort
+            FROM
+                channel_record
+            WHERE
+                channel_id = #{channelId}
+ 		]]>
+    </select>
+
+    <select id="getCount" resultType="int">
+        <![CDATA[
+ 			SELECT
+                count(id)
+            FROM channel_record
+            WHERE
+        ]]>
+            <if test="channelName!=null">channel_name LIKE '%${channelName}%' AND</if>
+            <if test="channelId!=null">channel_id LIKE '%${channelId}%' AND</if>
+            <if test="state!=null">state LIKE '%${state}%' AND</if>
+            <if test="issueState!=null">issue_state LIKE '%${issueState}%' AND</if>
+            <if test="appId!=null">select_app LIKE '%${appId}%' AND</if>
+            1 = 1
+    </select>
+
+    <select id="getListByIdList" parameterType="Object" resultType="com.tech.mediaserver.entity.ChannelRecord">
+        <![CDATA[
+ 			SELECT
+                id AS id,
+                channel_id AS channelId,
+                channel_name AS channelName,
+                source_url AS sourceUrl,
+                on_demand AS onDemand,
+                store_time AS storeTime,
+                state AS state,
+                select_app AS selectApp,
+                create_time AS createTime,
+                update_time AS updateTime,
+                issue_time AS issueTime,
+                issue_state AS issueState,
+                bitrate AS bitrate,
+                speed AS speed,
+                stored_time AS storedTime,
+                origin AS origin,
+                board_id AS boardId,
+                module_id AS moduleId,
+                hls_out_mode AS hlsOutMode,
+                hls_out_ip AS hlsOutIp,
+                hls_out_port AS hlsOutPort
+            FROM
+                channel_record c
+            WHERE
+                c.id
+            IN
+        ]]>
+        <foreach collection="array" item="id" index="no" open="("
+                 separator="," close=")">
+            #{id}
+        </foreach>
+<!--         and board_id in 
+        <foreach collection="board_list" item="board_id" open="(" separator="," close=")">
+            #{board_id}
+        </foreach>
+         and module_id in
+        <foreach collection="module_list" item="module_id" open="(" separator="," close=")">
+            #{module_id}
+        </foreach> -->
+    </select>
+
+    <insert id="save" keyProperty="id" useGeneratedKeys="true" parameterType="com.tech.mediaserver.entity.ChannelRecord">
+        <![CDATA[
+ 			INSERT INTO channel_record (
+                channel_id,
+                channel_name,
+                source_url,
+                on_demand,
+                store_time,
+                state,
+                select_app,
+                create_time,
+                update_time,
+                issue_time,
+                issue_state,
+                bitrate,
+                speed,
+                stored_time,
+                origin,
+                board_id,
+                module_id,
+                hls_out_mode,
+                hls_out_ip,
+                hls_out_port
+            )
+            VALUES (
+                #{channelId},
+                #{channelName},
+                #{sourceUrl},
+                #{onDemand},
+                #{storeTime},
+                #{state},
+                #{selectApp},
+                #{createTime},
+                #{updateTime},
+                #{issueTime},
+                #{issueState},
+                #{bitrate},
+                #{speed},
+                #{storedTime},
+                #{origin},
+                #{boardId},
+                #{moduleId},
+                #{hlsOutMode},
+                #{hlsOutIp},
+                #{hlsOutPort}
+            )
+ 		]]>
+    </insert>
+    
+    <insert id="saveList" parameterType="list" 
+	useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO channel_record (
+            channel_id,
+            channel_name,
+            source_url,
+            on_demand,
+            store_time,
+            state,
+            select_app,
+            create_time,
+            update_time,
+            issue_time,
+            issue_state,
+            bitrate,
+            speed,
+            stored_time,
+            origin,
+            board_id,
+            module_id,
+            hls_out_mode,
+            hls_out_ip,
+            hls_out_port
+        ) 
+		VALUES
+		<foreach collection="list" item="item" separator=",">
+			(#{item.channelId},
+             #{item.channelName},
+             #{item.sourceUrl},
+             #{item.onDemand},
+             #{item.storeTime},
+             #{item.state},
+             #{item.selectApp},
+             #{item.createTime},
+             #{item.updateTime},
+             #{item.issueTime},
+             #{item.issueState},
+             #{item.bitrate},
+             #{item.speed},
+             #{item.storedTime},
+             #{item.origin},
+             #{boardId},
+             #{moduleId},
+             #{hlsOutMode},
+             #{hlsOutIp},
+             #{hlsOutPort})
+		</foreach>
+	</insert>
+    
+    <insert id="addList" parameterType="com.tech.mediaserver.entity.ChannelRecord">
+		INSERT INTO channel_record(
+			id,
+            channel_id,
+            channel_name,
+            source_url,
+            on_demand,
+            store_time,
+            state,
+            select_app,
+            create_time,
+            update_time,
+            issue_time,
+            issue_state,
+            bitrate,
+            speed,
+            stored_time,
+            origin,
+            board_id,
+            module_id,
+            hls_out_mode,
+            hls_out_ip,
+            hls_out_port
+        )
+		VALUES
+		<foreach collection="item" item="item" separator=",">
+			(#{item.id},
+			 #{item.channelId},
+             #{item.channelName},
+             #{item.sourceUrl},
+             #{item.onDemand},
+             #{item.storeTime},
+             #{item.state},
+             #{item.selectApp},
+             #{item.createTime},
+             #{item.updateTime},
+             #{item.issueTime},
+             #{item.issueState},
+             #{item.bitrate},
+             #{item.speed},
+             #{item.storedTime},
+             #{item.origin},
+             #{item.boardId},
+             #{item.moduleId},
+             #{hlsOutMode},
+             #{hlsOutIp},
+             #{hlsOutPort})
+		</foreach>
+	</insert>
+    
+    <update id="updateAllIssueState">
+        UPDATE
+            channel_record
+        SET issue_state = 105;
+    </update>
+
+    <update id="update" parameterType="com.tech.mediaserver.entity.ChannelRecord">
+        UPDATE channel_record
+        <trim prefix="set" suffixOverrides=",">
+            <if test="channelId!=null">channel_id=#{channelId},</if>
+            <if test="channelName!=null">channel_name=#{channelName},</if>
+            <if test="sourceUrl!=null">source_url=#{sourceUrl},</if>
+            <if test="onDemand!=null">on_demand=#{onDemand},</if>
+            <if test="storeTime!=null">store_time=#{storeTime},</if>
+            <if test="state!=null">state=#{state},</if>
+            <if test="selectApp!=null">select_app=#{selectApp},</if>
+            <if test="createTime!=null">create_time=#{createTime},</if>
+            <if test="updateTime!=null">update_time=#{updateTime},</if>
+            <if test="issueTime!=null">issue_time=#{issueTime},</if>
+            <if test="issueState!=null">issue_state=#{issueState},</if>
+            <if test="bitrate!=null">bitrate=#{bitrate},</if>
+            <if test="speed!=null">speed=#{speed},</if>
+            <if test="storedTime!=null">stored_time=#{storedTime},</if>
+            <if test="origin!=null">origin=#{origin},</if>
+        </trim>
+        WHERE
+        id=#{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM
+        channel_record
+        WHERE
+        id
+        IN
+        <foreach collection="array" item="id" index="no" open="("
+                 separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateByChannelId" parameterType="com.tech.mediaserver.entity.ChannelRecord">
+        UPDATE channel_record
+        <trim prefix="set" suffixOverrides=",">
+            <if test="channelName!=null">channel_name=#{channelName},</if>
+            <if test="sourceUrl!=null">source_url=#{sourceUrl},</if>
+            <if test="onDemand!=null">on_demand=#{onDemand},</if>
+            <if test="storeTime!=null">store_time=#{storeTime},</if>
+            <if test="state!=null">state=#{state},</if>
+            <if test="createTime!=null">create_time=#{createTime},</if>
+            <if test="updateTime!=null">update_time=#{updateTime},</if>
+            <if test="issueTime!=null">issue_time=#{issueTime},</if>
+            <if test="bitrate!=null">bitrate=#{bitrate},</if>
+            <if test="speed!=null">speed=#{speed},</if>
+            <if test="storedTime!=null">stored_time=#{storedTime},</if>
+            <if test="issueState!=null">issue_state=#{issueState},</if>
+            <if test="bitrate!=null">bitrate=#{bitrate},</if>
+            <if test="speed!=null">speed=#{speed},</if>
+            <if test="storedTime!=null">stored_time=#{storedTime},</if>
+            <if test="origin!=null">origin=#{origin},</if>
+        </trim>
+        WHERE
+        channel_id=#{channelId}
+    </update>
+    
+    <select id="selectAllChannelIds" resultType="string">
+    	select channel_id from channel_record
+    </select>
+    
+    <delete id="deleteChannelRecord">
+    	truncate table channel_record 
+    </delete>
+    
+    <select id="selectAllChannelRecord" parameterType="String" resultType="com.tech.mediaserver.entity.ChannelRecord">
+    	SELECT
+            id AS id,
+            channel_id AS channelId,
+            channel_name AS channelName,
+            source_url AS sourceUrl,
+            on_demand AS onDemand,
+            store_time AS storeTime,
+            state AS state,
+            select_app AS selectApp,
+            create_time AS createTime,
+            update_time AS updateTime,
+            issue_time AS issueTime,
+            issue_state AS issueState,
+            bitrate AS bitrate,
+            speed AS speed,
+            stored_time AS storedTime,
+            origin AS origin,
+            board_id AS boardId,
+            module_id AS moduleId,
+            hls_out_mode AS hlsOutMode,
+            hls_out_ip AS hlsOutIp,
+            hls_out_port AS hlsOutPort
+        FROM
+            channel_record
+        WHERE
+        	<if test="channel_id!=null">channel_id LIKE '%${channel_id}%'</if>
+        	<if test="board_id!=null">and board_id = #{board_id}</if>
+        	<if test="module_id!=null">and module_id = #{module_id}</if>
+    </select>
+    
+</mapper>

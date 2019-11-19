@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.tech.mediaserver.dao.RfDao">
+	<resultMap type="com.tech.mediaserver.entity.Rf"
+		id="rf_allField">
+		<id column="board_id" property="boardId" jdbcType="INTEGER" />
+		<result column="lnb_power" property="lnbPower"
+			jdbcType="INTEGER" />
+		<result column="tone" property="tone" jdbcType="INTEGER" />
+		<result column="diseqc1_0" property="diseqc1_0"
+			jdbcType="INTEGER" />
+		<result column="diseqc1_1" property="diseqc1_1"
+			jdbcType="INTEGER" />
+		<!-- <result column="password" property="password" jdbcType="VARCHAR"/> -->
+	</resultMap>
+
+	<select id="getAllRf" resultMap="rf_allField">
+		select * from rf_table
+	</select>
+
+	<select id="getRfByBoardId" resultMap="rf_allField">
+		select * from rf_table where board_id = #{board_id}
+	</select>
+
+	<update id="saveRfInfo" parameterType="com.tech.mediaserver.entity.Rf">
+		UPDATE rf_table
+		<trim prefix="set" suffixOverrides=",">
+			<if test="lnbPower!=null">lnb_power=#{lnbPower},</if>
+			<if test="tone!=null">tone=#{tone},</if>
+			<if test="diseqc1_0!=null">diseqc1_0=#{diseqc1_0},</if>
+			<if test="diseqc1_1!=null">diseqc1_1=#{diseqc1_1},</if>
+		</trim>
+		WHERE
+		board_id=#{boardId}
+	</update>
+
+	<delete id="deleteRf">
+		truncate table rf_table 
+	</delete>
+	
+	<insert id="addRf" parameterType="com.tech.mediaserver.entity.Rf">
+		INSERT INTO rf_table()
+		VALUES
+		<foreach collection="rfs" item="rfs" separator=",">
+			(#{rfs.boardId},#{rfs.lnbPower},#{rfs.tone},#{rfs.diseqc1_0},#{rfs.diseqc1_1})
+		</foreach>
+    </insert>
+
+	<!-- <insert id="addUser" parameterType="com.tech.mediaserver.entity.User"> 
+		INSERT INTO `user` ( id, user_name, age ) VALUES ( #{id}, #{userName}, #{age} 
+		) </insert> -->
+
+</mapper>

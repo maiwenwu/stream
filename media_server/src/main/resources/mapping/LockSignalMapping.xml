@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.tech.mediaserver.dao.LockSignalDao">
+	<resultMap type="com.tech.mediaserver.entity.LockSignal"
+		id="lock_signal_allField">
+		<result column="board_id" property="boardId" jdbcType="INTEGER" />
+		<result column="module_id" property="moduleId" jdbcType="INTEGER" />
+		<result column="sat_id" property="satId" jdbcType="INTEGER" />
+		<result column="tp_id" property="tpId" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+			
+	</resultMap>
+
+	<select id="getAllLockSignal" resultMap="lock_signal_allField"> 
+		select * from lock_signal_table;
+	</select>
+
+	<select id="getLockSignalByBoardIdAndModuleId" resultMap="lock_signal_allField">
+		select * from lock_signal_table where board_id=#{board_id} and module_id=#{module_id}
+	</select>	
+
+	<update id="updateLockSignal" parameterType="com.tech.mediaserver.entity.LockSignal">
+		UPDATE lock_signal_table
+		<trim prefix="set" suffixOverrides=",">
+			<if test="satId!=null">sat_id=#{satId},</if>
+			<if test="tpId!=null">tp_id=#{tpId},</if>
+			<if test="status!=null">status=#{status},</if>
+		</trim>
+		WHERE
+		board_id=#{boardId} and module_id=#{moduleId}
+	</update>
+
+	<delete id="deleteLockSignal">
+		truncate table lock_signal_table 
+	</delete>
+	
+	<insert id="addLockSignal" parameterType="com.tech.mediaserver.entity.LockSignal">
+		INSERT INTO lock_signal_table()
+		VALUES
+		<foreach collection="lockSignals" item="lockSignals" separator=",">
+			(#{lockSignals.boardId},#{lockSignals.moduleId},#{lockSignals.satId},#{lockSignals.tpId},#{lockSignals.status})
+		</foreach>
+    </insert>
+    
+    <select id="getLockSignalByTpList" resultMap="lock_signal_allField">
+    	select * from lock_signal_table 
+    	WHERE tp_id in
+		<foreach collection="tp_list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <update id="updateLockSignalByTpList" >
+    	UPDATE lock_signal_table set tp_id = 0 , sat_id = 0 , status = 0
+		WHERE tp_id in 
+		<foreach collection="tp_list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    
+    <select id="getLockSignalBySatList" resultMap="lock_signal_allField">
+    	select * from lock_signal_table 
+    	WHERE sat_id in
+		<foreach collection="sate_list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <update id="updateLockSignalBySateList" >
+    	UPDATE lock_signal_table set tp_id = 0 , sat_id = 0 , status = 0
+		WHERE sat_id in 
+		<foreach collection="sate_list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

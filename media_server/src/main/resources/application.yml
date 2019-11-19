@@ -1,0 +1,49 @@
+spring:
+  redis:
+    host: 127.0.0.1
+    #host: 221.4.223.101
+    port: 6379
+#    password: m42e8cx6Mb
+    database: 1
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+    servlet:
+      content-type: text/html
+    check-template-location: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/stream_media_server?useUnicode=true&characterEncoding=utf8&useTimezone=true&serverTimezone=GMT%2B8
+    username: root
+    password: Star.123Mysql
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    tomcat:
+      max-active: 10
+      max-idle : 8
+      min-idle : 8
+      max-wait: 100
+      initial-size : 10
+#  devtools:
+#    restart:
+#      enabled: true
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+    
+  cache:
+    ehcache:
+      config: classpath:ehcache.xml   
+
+mybatis:
+  type-aliases-package: com.tech.mediaserver.dao
+  mapper-locations: classpath:/mapping/*.xml
+server:
+  port: 8080
+
+logging:
+    config: classpath:log4j.xml
+#    level:
+#       com.tech.mediaserver.dao : debug

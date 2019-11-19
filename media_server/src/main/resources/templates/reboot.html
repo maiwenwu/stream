@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="css/sb-admin.css" rel="stylesheet">
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/reboot_setting.js"></script>
+
+<style type="text/css">
+#reboot{
+	background-color: #a8e9ff;
+}
+input{
+	margin-left: 15px;
+}
+
+</style>
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<div class="card mb-3">
+				<div class="card-header">
+					 Immediately  Reboot
+				</div>
+				<div class="card-body" style="width: 60%; margin: 0 0 0 10%;">
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							<button class="btn btn-primary m-b-5 m-t-5"
+								style="margin-top: 10px; width: 100%" id="imme_reboot">Reboot</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="card mb-3">
+				<div class="card-header">
+					 <span>Timer Reboot</span>
+					 <!-- <span><input type="checkbox" id="enable">Enable</span> -->
+				</div>
+				<div class="card-body" style="width: 60%; margin: 0 0 0 10%;">
+					
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							<select class="form-control" id="type">
+								<option value=""> Off </option>
+								<option value="0"> Every Day </option>
+								<option value="1"> Every Week </option>
+								<option value="2"> Once </option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group row" id="every_day" style="display: none">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							 <input style="margin: 0;" id="day_input_h" onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" onkeyup="value=value.replace(/^|[^\d]+/g,'')"><label>:</label>
+                             <input style="margin: 0;" id="day_input_m" onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" onkeyup="value=value.replace(/^|[^\d]+/g,'')"><label>(H:M)</label>
+						</div>
+					</div>
+					
+					<div class="form-group row" id="every_week" style="display: none">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							 <input style="margin: 0;" type="checkbox" name="week" value="0"><label>Sun.</label>
+							 <input type="checkbox" name="week" value="1">Mon.
+                             <input type="checkbox" name="week" value="2">Tues.
+                             <input type="checkbox" name="week" value="3">Wed.
+                             <input type="checkbox" name="week" value="4">Thur.
+                             <input type="checkbox" name="week" value="5">Fri.
+                             <input type="checkbox" name="week" value="6">Sat.
+                              <br> <br>
+                             <input style="margin: 0;" id="week_input_h" onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" onkeyup="value=value.replace(/^|[^\d]+/g,'')"><label>:</label>
+                             <input style="margin: 0;" id="week_input_m" onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" onkeyup="value=value.replace(/^|[^\d]+/g,'')"><label>(H:M)</label>
+						</div>
+					</div>
+					
+					<div class="form-group row" id="once" style="display: none">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							 <input style="margin: 0;" type="radio" name="once" value="0">Sun.
+							 <input type="radio" name="once"  value="1">Mon.
+                             <input type="radio" name="once" value="2">Tues.
+                             <input type="radio" name="once" value="3">Wed.
+                             <input type="radio" name="once" value="4">Thur.
+                             <input type="radio" name="once" value="5">Fri.
+                             <input type="radio" name="once" value="6">Sat.
+                             <br> <br>
+                             <input style="margin: 0;" id="once_input_h" onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" onkeyup="value=value.replace(/^|[^\d]+/g,'')"><label>:</label>
+                             <input style="margin: 0;" id="once_input_m" onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" onkeyup="value=value.replace(/^|[^\d]+/g,'')"><label>(H:M)</label>						
+                        </div>
+					</div>
+					
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label"></label>
+						<div class="col-md-9">
+							<button class="btn btn-primary m-b-5 m-t-5"
+								style="margin-top: 10px; width: 100%" id="timer_reboot">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:include="common/logout::content"></div>
+</body>
+
+</html>

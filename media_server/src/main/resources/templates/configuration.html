@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="css/sb-admin.css" rel="stylesheet">
+<link rel="stylesheet" href="css/load5.css">
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/configuration.js"></script>
+
+<style type="text/css">
+#configuration{
+	background-color: #a8e9ff;
+}
+</style>
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<!-- Breadcrumbs-->
+			<!-- <ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="home">Home</a></li>
+			</ol> -->
+			<div class="card mb-3">
+			
+				<div class="card-header">
+					Export
+				</div>
+				<div class="card-body" style="text-align: center">
+					 <label>Export current configuration to an excel file.</label> <br>
+                     <label>We recommend to backup the current configuration before factory reset.</label> <br>
+					<a  class="btn btn-success" href="/configuration/exportExcel" style="width: 500px">
+						<i class="fa fa-download" aria-hidden="true"></i> Export
+					</a>
+				</div>
+			</div>
+			
+		</div>
+
+		<form id="uploadExcelForm" style="display: none">
+				<input type="file" id="file" name="file" class="input-file" enctype="multipart/form-data"/>
+		</form>
+
+		<div class="container-fluid">
+			<div class="card mb-3">
+				<div class="card-header">
+					Import
+				</div>
+				<div class="card-body" >
+				
+					<div class="input-group" style="text-align: center;width: 500px;margin: 0 auto;">
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-primary" id="import" style=""> 
+								<i class="fa fa-upload" aria-hidden="true"></i> Import
+							</button>
+						</span> 
+						<input type="text" class="form-control" style="width: 100%" id="fileName" readonly="readonly">
+					</div>
+				
+					<!-- <button type="button" class="btn btn-primary" id="import" style=""> 
+						<i class="fa fa-upload" aria-hidden="true"></i> Import
+					</button>
+					<input type="text" class="form-control" style="" id="fileName" readonly="readonly"> -->
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="modal" id="modal_wait" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+        <div class="load-container load5"><div class="loader">Loading...</div></div> 
+        </div>
+    </div>
+
+	<div th:include="common/logout::content"></div>
+</body>
+
+</html>

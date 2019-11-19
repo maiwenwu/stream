@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="css/sb-admin.css" rel="stylesheet">
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/system_settings.js"></script>
+
+<script type="text/javascript" src="vendor/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+<link href="vendor/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+					<div class="card mb-3">
+				<div class="card-header">
+					 Time Setting
+				</div>
+				<div class="card-body" style="width: 60%; margin: 0 0 0 20%;">
+					<div class="form-group row">
+						<div class="col-md-3 col-sm-12 col-form-label">TimeZone :</div>
+						<div class="col-md-9 col-sm-12 ">
+							<select class="form-control" id="time_zone_id">
+							</select>
+						</div>
+					</div>
+					<div id="day_light" style="display:none;">
+						<div class="form-group row">
+							<div class="col-md-3 col-sm-12 col-form-label"></div>
+							<div class="col-sm-12 col-md-1" style="margin:auto">
+								<input type="checkbox" checked="checked" class="form-control" value="1" disabled ="true" style="width:auto;padding:0px">
+							</div>
+							<div class="col-md-8 col-sm-12 col-form-label" style="padding-left:0">Automatic daylight savings</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<!-- <div for="dtp_input1" class="col-md-3 col-sm-3 control-label">DateTime :</div>
+		                <div class="input-group date form_datetime col-md-7 col-sm-7" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii:ss" data-link-field="dtp_input1">
+		                    <input class="form-control" size="16" type="text" id="defaul_time" value="" readonly>
+		                    <span class="input-group-addon"><i class="fa fa-times" aria-hidden="true"></i></span>
+							<span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+		                </div>
+						<input type="hidden" id="dtp_input1" value="" /><br/> -->
+						<div class="col-md-3 col-sm-12 col-form-label"></div>
+						<div class="col-sm-12 col-md-7">
+							<input class="form-control" id="defaul_time" disabled ="true">
+						</div>
+						<div class="col-md-2 col-sm-2">
+							<button class="btn btn-primary m-b-5 m-t-5" style="width: 100%" id="sync_gmt">Sync</button>
+						</div>
+		            </div>
+		            <div class="form-group row">
+							<div class="col-md-3 col-form-label"></div>
+							<div class="col-md-9">
+								<button class="btn btn-primary m-b-5 m-t-5"
+									style="margin-top: 10px; width: 100%" id="save_time">Save</button>
+							</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="card mb-3">
+				<div class="card-header">
+					 Password Settings
+				</div>
+				<div class="card-body" style="width: 60%; margin: 0 0 0 20%;white-space: nowrap;">
+					<div class="form-group row">
+						<div class="col-md-3 col-form-label"><span class="span">User Name</span></div>
+						<div class="col-md-9">
+							<input class="form-control" type="text" id="user_name" readonly="readonly">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3 col-form-label"><span class="span">Old Password</span></div>
+						<div class="col-md-9">
+							<input class="form-control" type="password" id="old_password" >
+						</div>
+						
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3 col-form-label"><span class="span">New Password</span></div>
+						<div class="col-md-9">
+							<input class="form-control" type="password" id="new_password" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3 col-form-label"><span class="span">Confirm Password</span></div>
+						<div class="col-md-9">
+							<input class="form-control" type="password" id="confirm_password" >
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-md-3 col-form-label"></div>
+						<div class="col-md-9">
+							<button class="btn btn-primary m-b-5 m-t-5"
+								style="margin-top: 10px; width: 100%" id="update_password">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+
+	<div th:include="common/logout::content"></div>
+</body>
+</html>

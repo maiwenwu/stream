@@ -1,0 +1,148 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
+		id="mainNav">
+		<span class="navbar-brand">Streaming server</span> 
+		<!-- <span class="navbar-brand">
+			<a style="padding: 0px;padding-left: 200px" class="nav-link mr-lg-2" id="messagesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="indicator text-primary d-none d-lg-block"> </span>aaa
+			</a>
+		</span> 
+		<span class="navbar-brand">
+			<a style="padding: 0px;padding-left: 100px" class="nav-link mr-lg-2" id="messagesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="indicator text-primary d-none d-lg-block"> </span>aaa
+			</a>
+		</span> 
+		<span class="navbar-brand">
+			<a style="padding: 0px;padding-left: 100px" class="nav-link mr-lg-2" id="messagesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="indicator text-primary d-none d-lg-block"> </span>aaa
+			</a>
+		</span> -->
+		<button class="navbar-toggler navbar-toggler-right" type="button"
+			data-toggle="collapse" data-target="#navbarResponsive"
+			aria-controls="navbarResponsive" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+				<li class="nav-item">
+					<a class="nav-link" href="#">
+						<span class="nav-link-text">Home</span>
+					</a>
+					<ul class="sidenav-second-level " id="">
+						<li><a href="system_info" id="system_info">System Info</a></li>
+						<li><a href="other" id="other">Other</a></li>
+					</ul>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link " href="#"> 
+						<span class="nav-link-text">Boards</span>
+					</a>
+					<ul class="sidenav-second-level " id="collapseStreams">
+						<li><a href="rf_setting" id="rf_settings">RF Settings</a></li>
+						<li><a href="search" id="search">Search</a></li>
+						<!-- <li><a href="add_sat" id="add_satllite>Add Satllite</a></li> -->
+					</ul>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link" href="#"> 
+						<span class="nav-link-text">Streams</span>
+					</a>
+					<ul class="sidenav-second-level " id="">
+						<li><a href="stream_manager" id="streaming_manager">Manage Streams</a></li>
+						<!-- <li><a href="stream_list" id="streaming_list">Stream List</a></li> -->
+						<li><a href="hls_manager" id="hls_manager">Streams List</a></li>
+						<!-- <li><a href="add_stream" id="add_stream">Add Stream</a></li> -->
+					</ul>
+				</li>
+				<!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="">
+					<a class="nav-link" href="#"> 
+						<span class="nav-link-text">HLS</span>
+					</a>
+					<ul class="sidenav-second-level " id="">
+						<li><a href="hls_manager" id="hls_manager" title="hls_manager">HLS</a></li>
+					</ul>
+				</li> -->
+				<li class="nav-item">
+					<a class="nav-link" href="#"> 
+						<span class="nav-link-text">Data</span>
+					</a>
+					<ul class="sidenav-second-level " id="">
+						<li><a href="/satlliteManager" id="satllite_manager">Manage Satellite</a></li>
+						<li><a href="/transponderManager" id="transponder_manager">Manage Transponder</a></li>
+						<li><a href="/programManager" id="program_manager">Manage Program</a></li>
+					</ul>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link" href="#">
+						<span class="nav-link-text">System</span>
+					</a>
+					<ul class="sidenav-second-level " id="">
+						<li><a href="/netWork" id="net_work">Network Settings</a></li>
+						<li><a href="/configuration" id="configuration">Import/Export</a></li>
+						<li><a href="/factory" id="factory">Factory Reset</a></li>
+						<li><a href="/reboot" id="reboot">Reboot Settings</a></li>
+						<li><a href="/log" id="log">Log Info</a></li>
+					</ul>
+				</li>
+
+			</ul>
+
+			<!-- <ul class="navbar-nav sidenav-toggler"
+				style="background-color: #eaecef">
+				<li class="nav-item"><a class="nav-link text-center"
+					id="sidenavToggler"> <i class="fa fa-fw fa-angle-left"></i>
+				</a></li>
+			</ul> -->
+			<!-- <ul class="navbar-nav">
+				<li class="nav-item dropdown" >
+					<span style="padding-right: 30px" class="nav-link mr-lg-2" > 
+						UP:<span>0day,00:00:00</span>
+					</span>
+				</li>
+				<li class="nav-item dropdown">
+					<span style="padding-right: 30px" class="nav-link mr-lg-2" > 
+						TOTAL:<span id="total">0</span>
+					</span>
+				</li>
+				<li class="nav-item dropdown">
+					<span style="padding-right: 30px" class="nav-link mr-lg-2"> 
+						RUNNING:<span id="running">0</span>
+					</span>
+				</li>
+				
+				<li class="nav-item dropdown" >
+					<span style="padding-right: 30px" class="nav-link mr-lg-2" > 
+						STOP:<span id="stop">0</span>
+					</span>
+				</li>
+				
+				<li class="nav-item dropdown">
+					<span style="padding-right: 30px" class="nav-link mr-lg-2" > 
+						ERROR:<span id=error>0</span>
+					</span>
+				</li>
+			</ul>  -->
+			<ul class="navbar-nav ml-auto" style="margin-left: 0px;">
+				<li class="nav-item"><a class="nav-link" href="/version_log" title="Tag"> <i class="fa fa-tag" aria-hidden="true"></i>
+				</a></li>
+			
+				<li class="nav-item"><a class="nav-link" href="/update" title="Update"> <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+				</a></li>
+
+				<li class="nav-item"><a class="nav-link" href="/system_setting" title="System Settings"> <i class="fa fa-cog" aria-hidden="true" style="color:rgba(255,255,255,.5);"></i>
+				</a></li>
+
+				<li class="nav-item"><a class="nav-link" data-toggle="modal" id="btn_logout"> <i class="fa fa-fw fa-sign-out"></i>Logout
+				</a></li>
+			</ul>
+		</div>
+
+	</nav>
+</div>
+</html>

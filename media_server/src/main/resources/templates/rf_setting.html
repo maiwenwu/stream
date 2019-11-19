@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+<!-- Bootstrap core CSS-->
+<link href="/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link href="/vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin.css" rel="stylesheet">
+<!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script src="/js/rf_setting.js"></script>
+<style type="text/css">
+td, th {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.create {
+	background: transparent; /*按钮背景透明*/
+	border-width: 0px; /*边框透明*/
+	outline: none; /*点击后没边框*/
+}
+#rf_settings{
+	background-color: #a8e9ff;
+}
+.fa-cog {
+	color: blue;
+}
+
+.fa-cog:hover {
+	color: #007BFF
+}
+</style>
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<!-- Breadcrumbs-->
+			<!-- <ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="home">Home</a></li>
+				<li class="breadcrumb-item active">RF Settings Page</li>
+			</ol> -->
+			<div class="card mb-3">
+				<div class="card-header">
+					 RF Settings
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-bordered" id="dataTable" width="100%"
+							cellspacing="0">
+							<thead>
+								<tr>
+									<th>Board ID</th>
+									<th>22KHz</th>
+									<th>LNB Power</th>
+									<th>DiSEqC1.0</th>
+									<th>DiSEqC1.1</th>
+									<th>Settings</th>
+								</tr>
+							</thead>
+							<tbody class="rf_list">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+			data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-llg" >
+				<div class="modal-content" >
+					<!-- <div class="modal-header">
+						<h5 class="modal-title" id="myModalLabel">RF Settings</h5>
+					</div> -->
+					<div class="modal-body" >
+						<div class="card mb-3">
+<!-- 							<div class="card-header">
+								<i class="fa fa-cog"></i> RF Settings
+							</div> -->
+							<div class="card-body">
+								<!-- <form class="form-horizontal"> -->
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label">Board ID</label>
+									<div class="col-md-9">
+										<input class="form-control" type="text" id="board_id"
+											readonly="readonly">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label">22KHz</label>
+									<div class="col-md-9">
+										<select class="form-control" id="tone">
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label">LNB Power</label>
+									<div class="col-md-9">
+										<select class="form-control" id="lnb_power">
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label">DiSEqC1.0</label>
+									<div class="col-md-9">
+										<select class="form-control" id="diseqc1_0">
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label">DiSEqC1.1</label>
+									<div class="col-md-9">
+										<select class="form-control" id="diseqc1_1">
+										</select>
+									</div>
+								</div>
+								<!-- <div class="form-group row">
+									<label class="col-md-3 col-form-label"></label>
+									<div class="col-md-9">
+										<button class="btn btn-primary m-b-5 m-t-5 "
+											style="width: 100%" id="save">Save</button>
+									</div>
+								</div> -->
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" id="close">Close</button>
+						<button class="btn btn-primary" id="save">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="modal fade bs-example-modal-lg" id="myModal1" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+			data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-llg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="myModalLabel">RF Settings</h5>
+					</div>
+					<div class="modal-body" >
+						<div class="card mb-3">
+							<div class="card-header">
+								<i class="fa fa-cog"></i> RF Settings
+							</div>
+							<div class="card-body">
+								<!-- <form class="form-horizontal"> -->
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label">Board Id</label>
+									<div class="col-md-9">
+										<input class="form-control" type="text" id="board_id"
+											readonly="readonly">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label">22k</label>
+									<div class="col-md-9">
+										<select class="form-control" id="tone">
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label">LNB Power</label>
+									<div class="col-md-9">
+										<select class="form-control" id="lnb_power">
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label">DiSEqC1.0</label>
+									<div class="col-md-9">
+										<select class="form-control" id="diseqc1_0">
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label">DiSEqC1.1</label>
+									<div class="col-md-9">
+										<select class="form-control" id="diseqc1_1">
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-md-3 col-form-label"></label>
+									<div class="col-md-9">
+										<button class="btn btn-primary m-b-5 m-t-5 "
+											style="width: 100%" id="save">Save</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" id="close1">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div th:include="common/logout::content"></div>
+
+	</div>
+</body>
+
+</html>

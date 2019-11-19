@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.tech.mediaserver.dao.RebootInfoDao">
+	<resultMap type="com.tech.mediaserver.entity.RebootInfo"
+		id="reboot_allField">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="enable" property="enable" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="year" property="year" jdbcType="INTEGER" />
+		<result column="month" property="month" jdbcType="INTEGER" />
+		<result column="month_day" property="monthDay" jdbcType="INTEGER" />
+		<result column="week_day" property="weekDay" jdbcType="INTEGER" />
+		<result column="hour" property="hour" jdbcType="INTEGER" />
+		<result column="minute" property="minute" jdbcType="INTEGER" />
+		<!-- <result column="password" property="password" jdbcType="VARCHAR"/> -->
+	</resultMap>
+
+	<select id="getRebootInfo" resultMap="reboot_allField">
+		select * from reboot_table
+	</select>
+
+	<delete id="deleteRebootInfo">
+		truncate table reboot_table
+	</delete>
+	
+	<insert id="addRebootInfo" parameterType="com.tech.mediaserver.entity.RebootInfo">
+		INSERT INTO reboot_table(enable,type,week_day,hour,minute)
+		VALUES
+		<foreach collection="rebootInfos" item="rebootInfos" separator=",">
+			(#{rebootInfos.enable},#{rebootInfos.type},#{rebootInfos.weekDay},#{rebootInfos.hour},#{rebootInfos.minute})
+		</foreach>
+    </insert>
+
+</mapper>

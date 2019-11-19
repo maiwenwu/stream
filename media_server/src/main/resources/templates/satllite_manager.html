@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Streaming Server</title>
+
+<link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+
+<link href="css/sb-admin.css" rel="stylesheet">
+<link href="/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script src="js/sb-admin.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/satllite_manager.js"></script>
+<style type="text/css">
+	 #satllite_manager{
+		background-color: #a8e9ff;
+	}
+	.tr-link:hover {
+    	cursor: pointer;
+    	background-color: #007bff;
+	}
+	.tr-in{
+   		background-color: #a8e9ff;;
+	}
+	.table-head{padding-right:16px; color:#000;height:auto;width: 100%;margin-top: -4px;}
+    .table-body{width:100%; height:600px;overflow-y:scroll;}
+}
+	
+</style>
+
+</head>
+
+<body class="fixed-nav" id="page-top">
+	<!-- Navigation-->
+
+	<div th:include="common/menu::content"></div>
+
+	<div class="content-wrapper">
+		<div class="container-fluid">
+			<div class="card mb-3" >
+				<div class="card-header">Manage Satellite</div>
+				<div class="card-body" style="padding:0">
+					<div class="">
+						<div class="row" style="margin: 0;display: flex;">
+							<div class="col-sm-6 col-xs-12 col-md-8" style="margin-top: 4px;">
+								<input type="search" class="form-control formcontrol-sm" id="key_word" 
+								style="display: inline-block;width: auto;" placeholder="Search angle">
+							</div>
+							<div class="col-sm-6 col-xs-12 col-md-4" style="height:50px;">
+								<div style="float:right;line-height:50px" >
+									<a id="edit_sat" style="cursor:pointer" class="col-sm-4 col-md-4" title="Edit">
+										<i class="fa fa-pencil-square-o " style="color:#007bff;line-height: 50px;font-size: 1.5em;" aria-hidden="true" ></i>
+									</a>
+									<a id="add_sat" style="cursor:pointer" class="col-sm-4 col-md-4" title="Add">
+										<i class="fa fa-plus-circle " style="color:#007bff;line-height: 50px;font-size: 1.5em;" aria-hidden="true" ></i>
+									</a>
+									<a id="delete_sat" style="cursor:pointer" class="col-sm-4 col-md-4" title="Delete">
+										<i class="fa fa-trash-o " style="color:#007bff;line-height: 50px;font-size: 1.5em;" aria-hidden="true" ></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="row" id="table" style="margin: 0;display: flex;"> -->
+							<div class="table-head">
+								<table class="table table-bordered" id="dataTable" style="margin: 0px;">
+									<thead>
+										<tr>
+											<th width="5%"><input type="checkbox" id="check_all"/></th>
+											<th width="15%">ID</th>
+											<th width="30%">Name</th>
+											<th width="20%">Dir</th>
+											<th width="20%">Angle</th>
+											<!-- <th width="25%">LNB Type</th> -->
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div class="table-body">
+								<table class="table table-bordered" id="dataTable">
+									<tbody id="satllite_list">
+									</tbody>
+								</table>
+							</div>
+						<!-- </div> -->
+					</div>
+				</div>
+			</div>
+			<div class="row" style="float: left;margin: 0;display: flex;">
+				<div style="padding:5px">
+					<span >Showing <span id="first"></span> to <span id="last"></span> of <span id="total"></span>entries</span>
+				</div>
+			</div>
+			<div class="row" style="float: right;margin: 0;display: flex;">
+				<div style="padding:5px">
+					<select class="form-control formcontrol-sm" id="page_size" style="display: inline-block;width: 75px">
+					<option>10</option>
+					<option>15</option>
+					<option>20</option>
+					<option>50</option>
+					<option>100</option>
+				</select>
+				</div>
+				
+				<div class="col-sm-2 col-md-7" style="float:right;padding:5px">
+					<ul class="pagination">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade bs-example-modal-lg" id="sat_modal" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+		data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-llg" >
+			<div class="modal-content" >
+				<div class="modal-header">
+					<h5 class="modal-title" id="myModalLabel">Add Satellite</h5>
+				</div>
+				<div class="modal-body" >
+					<div class="card mb-3">
+						<div class="card-body">
+							<input type="reset" name="reset" style="display: none;" />
+							<div class="form-group row" style="display:none">
+								<label class="col-md-3 col-form-label">id</label>
+								<div class="col-md-9">
+									<input class="form-control" type="number" id="sat_id"
+									onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"
+									/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">Name</label>
+								<div class="col-md-9">
+									<input class="form-control" type="text" id="sat_name" placeholder="input satellite name">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">Dir</label>
+								<div class="col-md-9">
+									<select class="form-control" id="sat_dir"></select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-md-3 col-form-label">Angle</label>
+								<div class="col-md-9">
+									<input class="form-control" type="number" id="sat_angle"  placeholder="input satellite angle"
+									onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"
+									/>
+								</div>
+							</div>
+							<div class="form-group row" id="lnb_show_type">
+								<label class="col-md-3 col-form-label" id="func_type">Lnb_type</label>
+								<div class="col-md-9">
+									<select class="form-control" id="sat_lnb_type"></select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" id="btn_cancel">Close</button>
+					<button class="btn btn-primary" id="btn_ok">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="common/logout::content"></div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+--- !com.pengjing.Root
+network: !com.pengjing.NetWork
+  bonds: !com.pengjing.Bonds
+    bond0: !com.pengjing.Bond0
+      addresses: 
+        - 192.168.1.11/24
+      gateway4: 192.168.1.1
+      interfaces: 
+        - eno1
+        - eno3
+        - eno5
+        - eno6
+        - eno8
+      nameservers: !com.pengjing.Nameservers
+        addresses: 
+          - 8.8.8.8
+          - 8.8.4.4
+      parameters: !com.pengjing.Parameters
+        mode: balance-alb
+  ethernets: !com.pengjing.Ethernets
+    eno1: !com.pengjing.Eno1
+      dhcp4: no
+    eno2: !com.pengjing.Eno2
+      addresses: 
+        - 11.12.13.161/24
+      gateway4: 11.12.13.1
+      nameservers: !com.pengjing.Nameservers
+        addresses: 
+          - 11.12.13.1
+          - 8.8.8.8
+    eno3: !com.pengjing.Eno3
+      dhcp4: no
+    eno4: !com.pengjing.Eno4
+      addresses: 
+        - 11.12.14.161/24
+      gateway4: 11.12.14.1
+      nameservers: !com.pengjing.Nameservers
+        addresses: 
+          - 11.12.14.1
+          - 8.8.8.8
+    eno5: !com.pengjing.Eno5
+      dhcp4: no
+    eno6: !com.pengjing.Eno6
+      dhcp4: no
+    eno7: !com.pengjing.Eno7
+      addresses: 
+        - 192.168.1.12/24
+      gateway4: 192.168.1.1
+      nameservers: !com.pengjing.Nameservers
+        addresses: 
+          - 192.168.1.1
+          - 8.8.8.8
+    eno8: !com.pengjing.Eno8
+      dhcp4: no
+  renderer: networkd
+  version: "2"
