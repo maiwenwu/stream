@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div>
+  <div style="padding : 0px 1rem;">
     <!-- <span>Home</span>
     <el-button @click="getInfo()" type="primary" round>主要按钮</el-button>
     <br />
@@ -70,14 +70,14 @@
     </el-container>
     <el-table
       :data="data"
-      height="750"
+      height="700"
       v-loading="tableLoading"
       border
       max-height="900"
       @selection-change="selectAll"
     >
       <el-table-column type="selection" align="center"></el-table-column>
-      <el-table-column type="index" :index="index + 1" align="center"></el-table-column>
+      <el-table-column type="index" :index="table_index" align="center"></el-table-column>
       <el-table-column prop="boardId" label="Board ID" align="center"></el-table-column>
       <el-table-column prop="serviceId" label="Service ID " align="center"></el-table-column>
       <el-table-column prop="serviceName" label="Service Name" align="center"></el-table-column>
@@ -97,10 +97,27 @@
         :current-page="currentPage"
         @current-change="currentChange"
         @size-change="sizeChange"
-        layout="total, sizes, prev, pager, next, jumper"
+        layout="total, sizes, jumper, prev, pager, next"
         :total="totalCount"
       ></el-pagination>
     </div>
+    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+      <el-form v-model="data">
+        <el-form-item label="活动名称" label-width="80px">
+          <el-input v-model="data.serviceName" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="活动区域" label-width="80px">
+          <el-select v-model="data.tpId" placeholder="请选择活动区域" style="display:block;">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -117,7 +134,7 @@ export default {
       dispName: [],
       aStrUipol: ["H", "V", "L", "R"],
       couponSelected: 0,
-      sateSelected: 1,
+      sateSelected: 93,
       boardSelected: 5,
       keyWord: "",
       totalCount: -1,
@@ -131,7 +148,8 @@ export default {
         { id: 3, name: "Board" },
         { id: 4, name: "Board" }
       ],
-      all_id: []
+      all_id: [],
+      dialogFormVisible: false
     };
   },
   mounted: function() {
@@ -170,8 +188,13 @@ export default {
     },
     getTpInfo() {
       this.$ajax
-        .post("http://localhost:8080/search/getSatInfoById?id=93&max_tp_id=0")
+        .post(
+          "http://localhost:8080/search/getSatInfoById?id=" +
+            this.sateSelected +
+            "&max_tp_id=0"
+        )
         .then(response => {
+          this.dispName = [];
           this.tp_info = response.data.tp_info;
           var obj = new Object();
           obj.id = 0;
@@ -206,6 +229,7 @@ export default {
     },
     handleEdit(index, row) {
       console.log(index, row);
+      this.dialogFormVisible = true;
     },
     handleDelete(index, row) {
       console.log(index, row);
@@ -255,6 +279,7 @@ export default {
     },
     changeSate(event) {
       this.getInfo();
+      this.getTpInfo();
     },
     changeBoard() {
       this.getInfo();
@@ -273,7 +298,46 @@ export default {
     selectAll(val) {
       console.log(val);
       this.all_id = val;
+    },
+    table_index(index) {
+      return (this.currentPage - 1) * this.pageSize + index + 1;
     }
   }
 };
 </script>
+
+<style lang="less">
+.table {
+  width: 100%;
+  max-width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+}
+.col-form-label {
+  white-space: nowrap;
+  text-align: left;
+  margin: 0 auto;
+  padding-top: calc(0.375rem + 1px);
+  padding-bottom: calc(0.375rem + 1px);
+  line-height: 1.5;
+  display: inline-block;
+  padding-right: 20px;
+}
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-image: none;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+tr {
+  margin-bottom: 1rem;
+}
+</style>

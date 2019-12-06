@@ -48,7 +48,7 @@ export default {
         // localStorage.setItem('userName', '小明')
         // // 登陆成功 假设这里是后台返回的 token
         // localStorage.setItem('token', 'i_am_token')
-          this.$router.push({path:'/'});
+          this.$router.push({name:'main'});
       } else {
         // if (this.account !== 'admin') {
         //     this.accountError = '账号为admin'

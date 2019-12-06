@@ -3,12 +3,12 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-import Home from '../components/Home.vue';
-import News from '../components/News.vue';
+import ManageProgram from '../components/ManageProgram.vue';
 import Stream from '../components/Stream.vue';
 import Search from '../components/Search.vue';
 import Main from '../components/Main.vue';
 import Login from '../components/Login.vue';
+import RFSettings from '../components/RfSettings.vue';
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
@@ -18,7 +18,15 @@ VueRouter.prototype.push = function push(location) {
 const routes = [
 
 	{
-		path: '/',
+		path:'/',
+		name:'login',
+		meta: {
+			requireAuth: true,
+		},
+		component: Login,
+	},
+	{
+		path: '/main',
 		name: 'main',
 		meta: {
 			requireAuth: true,
@@ -26,22 +34,17 @@ const routes = [
 		component: Main,
 		children: [
 			{
-				path: 'home',
-				name: 'home',
-				component: Home,
+				path: '/manage_program',
+				name: 'manage_program',
+				component: ManageProgram,
 			},
 			{
-				path: 'news',
-				name: 'news',
-				component: News,
+				path: '/rf_setting',
+				name: 'rf_setting',
+				component: RFSettings,
 			},
 			{
-				path: 'stream',
-				name: 'stream',
-				component: Stream,
-			},
-			{
-				path: 'search',
+				path: '/search',
 				name: 'search',
 				component: Search,
 			}
